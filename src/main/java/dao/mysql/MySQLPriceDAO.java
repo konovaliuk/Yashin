@@ -2,6 +2,8 @@ package dao.mysql;
 
 import dao.DataSource;
 import dao.PriceDAO;
+import dao.mysql.util.MessageUtil;
+import dao.mysql.util.QueryUtil;
 import entity.Price;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,18 +15,7 @@ import java.util.List;
 class MySQLPriceDAO implements PriceDAO{
     private static final Log LOG = LogFactory.getLog(MySQLPriceDAO.class);
     private static final MySQLPriceDAO INSTANCE = new MySQLPriceDAO();
-
-    private static final String FIND_ALL = "SELECT * FROM price";
-    private static final String FIND_BY_ID = "SELECT * FROM price WHERE price.id=?";
-    private static final String CREATE = "INSERT INTO price" +
-            "(berth_factor, compartment_factor, deluxe_factor) VALUES" +
-            "(?,?,?)";
-    private static final String UPDATE = "UPDATE price " +
-            "SET berth_factor=?, compartment_factor=?, deluxe_factor=? " +
-            "WHERE id=?";
-    private static final String DELETE = "DELETE FROM price " +
-            "WHERE id=?";
-
+    private static final String TABLE_NAME = "price";
 
     private static final String LABEL_ID = "id";
     private static final String LABEL_BERTH_FACTOR = "berth_factor";
@@ -38,20 +29,9 @@ class MySQLPriceDAO implements PriceDAO{
     private static final int COMPARTMENT_FACTOR = 2;
     private static final int DELUXE_FACTOR = 3;
 
-    private static final String INFO_CREATE = "CREATE PRICE with ID = %d";
-    private static final String INFO_UPDATE = "UPDATE PRICE with ID = %d";
-    private static final String INFO_DELETE = "DELETE PRICE with ID = %d";
-
-    private static final String ERROR_FIND_ALL = "Cannot get LIST of PRICES";
-    private static final String ERROR_FIND_BY_ID = "Cannot get PRICE by ID = %d";
-    private static final String ERROR_CREATE = "Cannot CREATE new PRICE";
-    private static final String ERROR_UPDATE = "Cannot UPDATE PRICE with ID = %d";
-    private static final String ERROR_DELETE = "Cannot DELETE PRICE with ID = %d";
-    private static final String ERROR_CLOSING = "Cannot close()";
-
     private MySQLPriceDAO(){}
 
-    public static MySQLPriceDAO getInstance(){
+    static MySQLPriceDAO getInstance(){
         return INSTANCE;
     }
 
@@ -62,9 +42,11 @@ class MySQLPriceDAO implements PriceDAO{
         Statement statement = null;
 
         try{
+            String findAllQuery = QueryUtil.createFindAllQuery(TABLE_NAME);
+
             connection = DataSource.getInstance().getConnection();
             statement = connection.createStatement();
-            ResultSet set = statement.executeQuery(FIND_ALL);
+            ResultSet set = statement.executeQuery(findAllQuery);
             while (set.next()){
                 Price price = new Price();
                 price.setId(set.getLong(LABEL_ID));
@@ -75,7 +57,7 @@ class MySQLPriceDAO implements PriceDAO{
                 result.add(price);
             }
         } catch (SQLException e){
-            LOG.error(ERROR_FIND_ALL);
+            LOG.error(MessageUtil.createErrorFindAll(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -90,8 +72,10 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
+            String findByIdQuery = QueryUtil.createFindByParameterQuery(TABLE_NAME, LABEL_ID);
+
             connection = DataSource.getInstance().getConnection();
-            statement = connection.prepareStatement(FIND_BY_ID);
+            statement = connection.prepareStatement(findByIdQuery);
             statement.setLong(ID_FIRST_PARAMETER, id);
             ResultSet set = statement.executeQuery();
             if (set.next()){
@@ -102,10 +86,11 @@ class MySQLPriceDAO implements PriceDAO{
                 result.setDeluxe_factor(set.getDouble(LABEL_DELUXE_FACTOR));
             }
         } catch (SQLException e){
-            LOG.error(String.format(ERROR_FIND_BY_ID, id));
+            LOG.error(MessageUtil.createErrorFindById(TABLE_NAME, id));
         } finally {
             close(connection, statement);
         }
+
 
         return result;
     }
@@ -116,8 +101,15 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
+            String createQuery = QueryUtil.createInsertQuery(
+                    TABLE_NAME,
+                    LABEL_BERTH_FACTOR,
+                    LABEL_COMPARTMENT_FACTOR,
+                    LABEL_DELUXE_FACTOR);
+
             connection = DataSource.getInstance().getConnection();
-            statement = connection.prepareStatement(CREATE);
+
+            statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
             statement.setDouble(BERTH_FACTOR, price.getBerth_factor());
             statement.setDouble(COMPARTMENT_FACTOR, price.getCompartment_factor());
             statement.setDouble(DELUXE_FACTOR, price.getDeluxe_factor());
@@ -127,13 +119,14 @@ class MySQLPriceDAO implements PriceDAO{
             if(set.next()){
                 price.setId(set.getLong(ID_FIRST_PARAMETER));
             }
+
+            LOG.info(MessageUtil.createInfoCreate(TABLE_NAME, price.getId()));
         } catch (SQLException e) {
-            LOG.error(ERROR_CREATE);
+            LOG.error(MessageUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
 
-        LOG.info(String.format(INFO_CREATE, price.getId()));
         return price;
     }
 
@@ -143,20 +136,29 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
+            String updateQuery = QueryUtil.createUpdateQuery(
+                    TABLE_NAME,
+                    LABEL_ID,
+                    LABEL_BERTH_FACTOR,
+                    LABEL_COMPARTMENT_FACTOR,
+                    LABEL_DELUXE_FACTOR);
+
             connection = DataSource.getInstance().getConnection();
-            statement = connection.prepareStatement(UPDATE);
+
+            statement = connection.prepareStatement(updateQuery);
             statement.setDouble(BERTH_FACTOR, price.getBerth_factor());
             statement.setDouble(COMPARTMENT_FACTOR, price.getCompartment_factor());
             statement.setDouble(DELUXE_FACTOR, price.getDeluxe_factor());
             statement.setLong(ID_FOURTH_PARAMETER, price.getId());
             statement.executeUpdate();
+
+            LOG.info(MessageUtil.createInfoUpdate(TABLE_NAME, price.getId()));
         } catch (SQLException e) {
-            LOG.error(String.format(ERROR_UPDATE, price.getId()));
+            LOG.error(MessageUtil.createErrorUpdate(TABLE_NAME, price.getId()));
         } finally {
             close(connection, statement);
         }
 
-        LOG.info(String.format(INFO_UPDATE, price.getId()));
         return price;
     }
 
@@ -166,22 +168,20 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
+            String deleteQuery = QueryUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
+
             connection = DataSource.getInstance().getConnection();
-            statement = connection.prepareStatement(DELETE);
+            statement = connection.prepareStatement(deleteQuery);
             statement.setLong(ID_FIRST_PARAMETER, price.getId());
             statement.executeUpdate();
 
-            ResultSet set = statement.getGeneratedKeys();
-            if(set.next()){
-                price.setId(set.getLong(ID_FIRST_PARAMETER));
-            }
+            LOG.info(MessageUtil.createInfoDelete(TABLE_NAME, price.getId()));
         } catch (SQLException e) {
-            LOG.error(String.format(ERROR_DELETE, price.getId()));
+            LOG.error(MessageUtil.createErrorDelete(TABLE_NAME, price.getId()));
         } finally {
             close(connection, statement);
         }
 
-        LOG.info(String.format(INFO_DELETE, price.getId()));
     }
 
     private void close(Connection connection, Statement statement){
@@ -189,7 +189,7 @@ class MySQLPriceDAO implements PriceDAO{
             if (connection != null) connection.close();
             if (statement!= null) statement.close();
         } catch (SQLException e) {
-            LOG.error(ERROR_CLOSING);
+            LOG.error(MessageUtil.createErrorClose());
         }
     }
 

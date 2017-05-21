@@ -13,7 +13,7 @@ class MySQLRequestDAO implements RequestDAO{
 
     private MySQLRequestDAO(){}
 
-    public static MySQLRequestDAO getInstance(){
+    static MySQLRequestDAO getInstance(){
         return INSTANCE;
     }
 
@@ -28,17 +28,12 @@ class MySQLRequestDAO implements RequestDAO{
     }
 
     @Override
-    public List<Request> findByRoute(Long id) {
+    public List<Request> findByUser(Long id) {
         return null;
     }
 
     @Override
     public Request findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public Double findPrice(Long id) {
         return null;
     }
 
