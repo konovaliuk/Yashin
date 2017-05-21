@@ -11,5 +11,6 @@ public class Main {
         PriceDAO priceDAO = factory.createPriceDAO();
 
         System.out.println(priceDAO.findAll());
+        System.out.println(priceDAO.findById(6L));
     }
 }
