@@ -1,0 +1,1 @@
+insert into railway_system.price(id, compartment_factor, )
