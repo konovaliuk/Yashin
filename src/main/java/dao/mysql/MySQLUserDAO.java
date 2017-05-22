@@ -38,6 +38,11 @@ class MySQLUserDAO implements UserDAO{
     }
 
     @Override
+    public User findByLogin(String login) {
+        return null;
+    }
+
+    @Override
     public User create(User user) {
         return null;
     }

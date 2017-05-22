@@ -1,20 +1,50 @@
 package dao.mysql.util;
 
 //TODO: Make methods to FindAll and FindByParameter
+//TODO: !!!!!!!!
 public class MessageUtil {
     private static final String CREATE = "CREATE";
     private static final String UPDATE = "UPDATE";
     private static final String DELETE = "DELETE";
 
-    private static final String WITH_ID = "with ID";
+    private static final String ID = "ID";
+    private static final String WITH = "with";
     private static final String CANNOT = "Cannot";
     private static final String CANNOT_GET = "Cannot get";
     private static final String CLOSE = "close()";
     private static final String LIST = "LIST";
     private static final String OF = "of";
 
+    private static final String SUCCESSFUL = "Successful";
+    private static final String FIND_ALL = "Find All";
+    private static final String FIND_BY_PARAMETER = "Find by parameter";
+
     private static final Character SPACE = ' ';
     private static final Character EQUALLY = '=';
+
+    /**
+     * @param tableName
+     * @return Successful Find All
+     */
+    public static String createInfoFindAll(String tableName){
+        StringBuilder builder = new StringBuilder();
+        builder.append(SUCCESSFUL).append(SPACE);
+        builder.append(FIND_ALL);
+
+        return builder.toString();
+    }
+
+
+    public static String createInfoFindByParameter(String tableName, String parameterLabel, Object parameter){
+        StringBuilder builder = new StringBuilder();
+        builder.append(SUCCESSFUL).append(SPACE);
+        builder.append(FIND_BY_PARAMETER).append(SPACE);
+        builder.append(parameterLabel.toUpperCase()).append(SPACE);
+        builder.append(EQUALLY).append(SPACE);
+        builder.append(parameter);
+
+        return builder.toString();
+    }
 
     /**
      * @param tableName
@@ -22,7 +52,7 @@ public class MessageUtil {
      * @return CREATE {tableName} with ID = {id}
      */
     public static String createInfoCreate(String tableName, Long id){
-        return createInfo(CREATE, tableName, id);
+        return createInfo(CREATE, tableName, ID, id);
     }
 
     /**
@@ -31,7 +61,7 @@ public class MessageUtil {
      * @return UPDATE {tableName} with ID = {id}
      */
     public static String createInfoUpdate(String tableName, Long id){
-        return createInfo(UPDATE, tableName, id);
+        return createInfo(UPDATE, tableName, ID, id);
     }
 
     /**
@@ -40,8 +70,9 @@ public class MessageUtil {
      * @return DELETE {tableName} with ID = {id}
      */
     public static String createInfoDelete(String tableName, Long id){
-        return createInfo(DELETE, tableName, id);
+        return createInfo(DELETE, tableName, ID, id);
     }
+
 
     /**
      * @param tableName
@@ -58,11 +89,12 @@ public class MessageUtil {
 
     /**
      * @param tableName
-     * @param id
-     * @return Cannot get {tableName} with ID = {id}
+     * @param parameterLabel
+     * @param parameter
+     * @return Cannot get {tableName} with {parameterLabel} = {id}
      */
-    public static String createErrorFindById(String tableName, Long id){
-        return createInfo(CANNOT_GET, tableName, id);
+    public static String createErrorFindByParameter(String tableName, String parameterLabel, Object parameter){
+        return createInfo(CANNOT_GET, tableName, parameterLabel, parameter);
     }
 
     /**
@@ -83,7 +115,7 @@ public class MessageUtil {
      * @return Cannot UPDATE {tableName} with ID = {id}
      */
     public static String createErrorUpdate(String tableName, Long id){
-        return createInfo(CANNOT + UPDATE, tableName, id);
+        return createInfo(CANNOT + SPACE + UPDATE, tableName, ID, id);
     }
 
     /**
@@ -92,7 +124,7 @@ public class MessageUtil {
      * @return Cannot DELETE {tableName} with ID = {id}
      */
     public static String createErrorDelete(String tableName, Long id){
-        return createInfo(CANNOT + DELETE, tableName, id);
+        return createInfo(CANNOT + SPACE + DELETE, tableName, ID, id);
     }
 
     /**
@@ -110,16 +142,18 @@ public class MessageUtil {
      * PRIVATE util method.
      * @param operation
      * @param tableName
-     * @param id
+     * @param parameterLabel
+     * @param parameter
      * @return
      */
-    private static String createInfo(String operation, String tableName, Long id){
+    private static String createInfo(String operation, String tableName, String parameterLabel, Object parameter){
         StringBuilder builder = new StringBuilder();
         builder.append(operation).append(SPACE);
         builder.append(tableName.toUpperCase()).append(SPACE);
-        builder.append(WITH_ID).append(SPACE);
+        builder.append(WITH).append(SPACE);
+        builder.append(parameterLabel.toUpperCase()).append(SPACE);
         builder.append(EQUALLY).append(SPACE);
-        builder.append(id);
+        builder.append(parameter);
 
         return builder.toString();
     }

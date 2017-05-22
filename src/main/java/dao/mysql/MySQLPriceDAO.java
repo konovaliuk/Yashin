@@ -22,13 +22,6 @@ class MySQLPriceDAO implements PriceDAO{
     private static final String LABEL_COMPARTMENT_FACTOR = "compartment_factor";
     private static final String LABEL_DELUXE_FACTOR = "deluxe_factor";
 
-    private static final int ID_FIRST_PARAMETER = 1;
-    private static final int ID_FOURTH_PARAMETER = 4;
-
-    private static final int BERTH_FACTOR = 1;
-    private static final int COMPARTMENT_FACTOR = 2;
-    private static final int DELUXE_FACTOR = 3;
-
     private MySQLPriceDAO(){}
 
     static MySQLPriceDAO getInstance(){
@@ -56,6 +49,8 @@ class MySQLPriceDAO implements PriceDAO{
 
                 result.add(price);
             }
+            LOG.info(MessageUtil.createInfoFindAll(TABLE_NAME));
+
         } catch (SQLException e){
             LOG.error(MessageUtil.createErrorFindAll(TABLE_NAME));
         } finally {
@@ -76,7 +71,7 @@ class MySQLPriceDAO implements PriceDAO{
 
             connection = DataSource.getInstance().getConnection();
             statement = connection.prepareStatement(findByIdQuery);
-            statement.setLong(ID_FIRST_PARAMETER, id);
+            statement.setLong(1, id);
             ResultSet set = statement.executeQuery();
             if (set.next()){
                 result = new Price();
@@ -86,7 +81,7 @@ class MySQLPriceDAO implements PriceDAO{
                 result.setDeluxe_factor(set.getDouble(LABEL_DELUXE_FACTOR));
             }
         } catch (SQLException e){
-            LOG.error(MessageUtil.createErrorFindById(TABLE_NAME, id));
+            LOG.error(MessageUtil.createErrorFindByParameter(TABLE_NAME, LABEL_ID, id));
         } finally {
             close(connection, statement);
         }
@@ -110,14 +105,14 @@ class MySQLPriceDAO implements PriceDAO{
             connection = DataSource.getInstance().getConnection();
 
             statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setDouble(BERTH_FACTOR, price.getBerth_factor());
-            statement.setDouble(COMPARTMENT_FACTOR, price.getCompartment_factor());
-            statement.setDouble(DELUXE_FACTOR, price.getDeluxe_factor());
+            statement.setDouble(1, price.getBerth_factor());
+            statement.setDouble(2, price.getCompartment_factor());
+            statement.setDouble(3, price.getDeluxe_factor());
             statement.executeUpdate();
 
             ResultSet set = statement.getGeneratedKeys();
             if(set.next()){
-                price.setId(set.getLong(ID_FIRST_PARAMETER));
+                price.setId(set.getLong(1));
             }
 
             LOG.info(MessageUtil.createInfoCreate(TABLE_NAME, price.getId()));
@@ -136,9 +131,7 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
-            String updateQuery = QueryUtil.createUpdateQuery(
-                    TABLE_NAME,
-                    LABEL_ID,
+            String updateQuery = QueryUtil.createUpdateQuery(TABLE_NAME, LABEL_ID,
                     LABEL_BERTH_FACTOR,
                     LABEL_COMPARTMENT_FACTOR,
                     LABEL_DELUXE_FACTOR);
@@ -146,10 +139,10 @@ class MySQLPriceDAO implements PriceDAO{
             connection = DataSource.getInstance().getConnection();
 
             statement = connection.prepareStatement(updateQuery);
-            statement.setDouble(BERTH_FACTOR, price.getBerth_factor());
-            statement.setDouble(COMPARTMENT_FACTOR, price.getCompartment_factor());
-            statement.setDouble(DELUXE_FACTOR, price.getDeluxe_factor());
-            statement.setLong(ID_FOURTH_PARAMETER, price.getId());
+            statement.setDouble(1, price.getBerth_factor());
+            statement.setDouble(2, price.getCompartment_factor());
+            statement.setDouble(3, price.getDeluxe_factor());
+            statement.setLong(4, price.getId());
             statement.executeUpdate();
 
             LOG.info(MessageUtil.createInfoUpdate(TABLE_NAME, price.getId()));
@@ -172,7 +165,7 @@ class MySQLPriceDAO implements PriceDAO{
 
             connection = DataSource.getInstance().getConnection();
             statement = connection.prepareStatement(deleteQuery);
-            statement.setLong(ID_FIRST_PARAMETER, price.getId());
+            statement.setLong(1, price.getId());
             statement.executeUpdate();
 
             LOG.info(MessageUtil.createInfoDelete(TABLE_NAME, price.getId()));

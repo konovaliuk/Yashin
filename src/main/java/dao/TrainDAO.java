@@ -12,10 +12,6 @@ public interface TrainDAO {
     List<Train> findByDate(Date date);
     Train findById(Long id);
 
-    Integer findCompartmentSize(Long id);
-    Integer findDeluxeSize(Long id);
-    Integer findBerthSize(Long id);
-
     Train create(Train train);
     Train update(Train train);
     void delete(Train train);

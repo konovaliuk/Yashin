@@ -28,6 +28,11 @@ class MySQLRouteDAO implements RouteDAO{
     }
 
     @Override
+    public Route findRouteByStations(String from, String to) {
+        return null;
+    }
+
+    @Override
     public Route create(Route route) {
         return null;
     }

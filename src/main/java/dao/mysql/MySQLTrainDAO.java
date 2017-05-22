@@ -39,21 +39,6 @@ class MySQLTrainDAO implements TrainDAO{
     }
 
     @Override
-    public Integer findCompartmentSize(Long id) {
-        return null;
-    }
-
-    @Override
-    public Integer findDeluxeSize(Long id) {
-        return null;
-    }
-
-    @Override
-    public Integer findBerthSize(Long id) {
-        return null;
-    }
-
-    @Override
     public Train create(Train train) {
         return null;
     }

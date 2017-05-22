@@ -53,7 +53,7 @@ public class QueryUtil {
     /**
      * @param tableName
      * @param parameters
-     * @return INSERT INTO {tableName}(parameters with comma) VALUES (?,?, ...)
+     * @return INSERT INTO {tableName(parameters with comma)} VALUES (?,?, ...)
      */
     public static String createInsertQuery(String tableName, String... parameters){
         StringBuilder builder = new StringBuilder();
