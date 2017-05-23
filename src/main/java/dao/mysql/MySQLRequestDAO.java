@@ -1,6 +1,6 @@
 package dao.mysql;
 
-import dao.DataSource;
+import dao.ConnectionPool;
 import dao.RequestDAO;
 import dao.mysql.util.MessageUtil;
 import dao.mysql.util.QueryUtil;
@@ -39,7 +39,7 @@ class MySQLRequestDAO implements RequestDAO{
         try{
             String findAllQuery = QueryUtil.createFindAllQuery(TABLE_NAME);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
             ResultSet set = statement.executeQuery(findAllQuery);
 
@@ -84,7 +84,7 @@ class MySQLRequestDAO implements RequestDAO{
                     LABEL_PRICE,
                     LABEL_TYPE);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
 
             statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
             statement.setLong(1, request.getUser_id());
@@ -114,12 +114,13 @@ class MySQLRequestDAO implements RequestDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createUpdateQuery(TABLE_NAME, LABEL_USER_ID,
+            String createQuery = QueryUtil.createUpdateQuery(TABLE_NAME, LABEL_ID,
+                    LABEL_USER_ID,
                     LABEL_TRAIN_ID,
                     LABEL_PRICE,
                     LABEL_TYPE);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(createQuery);
 
             statement.setLong(1, request.getUser_id());
@@ -146,9 +147,9 @@ class MySQLRequestDAO implements RequestDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createDeleteQuery(TABLE_NAME, LABEL_USER_ID);
+            String createQuery = QueryUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(createQuery);
 
             statement.setLong(1, request.getId());
@@ -180,7 +181,7 @@ class MySQLRequestDAO implements RequestDAO{
         try{
             String findByIdQuery = QueryUtil.createFindByParameterQuery(TABLE_NAME, parameterLabel);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(findByIdQuery);
             statement.setLong(1, id);
             ResultSet set = statement.executeQuery();

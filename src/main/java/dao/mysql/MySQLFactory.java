@@ -27,4 +27,9 @@ public class MySQLFactory implements DAOFactory{
     public UserDAO createUserDAO() {
         return MySQLUserDAO.getInstance();
     }
+
+    @Override
+    public StationDAO createStationDAO() {
+        return MySQLStationDAO.getInstance();
+    }
 }

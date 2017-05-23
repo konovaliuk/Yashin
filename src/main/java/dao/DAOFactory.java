@@ -9,4 +9,5 @@ public interface DAOFactory {
     RouteDAO createRouteDAO();
     TrainDAO createTrainDAO();
     UserDAO createUserDAO();
+    StationDAO createStationDAO();
 }

@@ -1,3 +1,7 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
 -- -----------------------------------------------------
 -- Schema railway_system
 -- -----------------------------------------------------
@@ -38,10 +42,21 @@ CREATE TABLE IF NOT EXISTS `railway_system`.`price` (
   `compartment_factor` FLOAT NOT NULL,
   `deluxe_factor` FLOAT NOT NULL,
   `berth_factor` FLOAT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `route_id_UNIQUE` (`route_id` ASC))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `railway_system`.`station`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `railway_system`.`station` ;
+
+CREATE TABLE IF NOT EXISTS `railway_system`.`station` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -50,19 +65,30 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `railway_system`.`route` ;
 
 CREATE TABLE IF NOT EXISTS `railway_system`.`route` (
-  `id` INT NOT NULL,
-  `from_station` VARCHAR(70) NOT NULL,
-  `to_station` VARCHAR(70) NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `from_time` TIME NOT NULL,
   `to_time` TIME NOT NULL,
   `price_id` INT(11) NOT NULL,
+  `from_id` INT NOT NULL,
+  `to_id` INT NOT NULL,
+  `distance` FLOAT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `departure` (`from_station` ASC),
-  INDEX `destination` (`to_station` ASC),
   INDEX `fk_route_price1_idx` (`price_id` ASC),
+  INDEX `fk_route_station1_idx` (`from_id` ASC),
+  INDEX `fk_route_station2_idx` (`to_id` ASC),
   CONSTRAINT `fk_route_price1`
     FOREIGN KEY (`price_id`)
     REFERENCES `railway_system`.`price` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_route_station1`
+    FOREIGN KEY (`from_id`)
+    REFERENCES `railway_system`.`station` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_route_station2`
+    FOREIGN KEY (`to_id`)
+    REFERENCES `railway_system`.`station` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -119,3 +145,8 @@ CREATE TABLE IF NOT EXISTS `railway_system`.`request` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COMMENT = '\n';
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

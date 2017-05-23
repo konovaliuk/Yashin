@@ -1,7 +1,5 @@
 package dao.mysql.util;
 
-//TODO: Make methods to FindAll and FindByParameter
-//TODO: !!!!!!!!
 public class MessageUtil {
     private static final String CREATE = "CREATE";
     private static final String UPDATE = "UPDATE";

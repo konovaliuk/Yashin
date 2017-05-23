@@ -11,11 +11,13 @@ public class Route {
     private Long id;
     private Long price_id;
 
-    private String from_station;
-    private String to_station;
+    private Long from_id;
+    private Long to_id;
 
     private String from_time;
     private String to_time;
+
+    private Double distance;
 
 
 }

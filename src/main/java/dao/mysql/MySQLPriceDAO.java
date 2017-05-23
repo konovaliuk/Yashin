@@ -1,6 +1,6 @@
 package dao.mysql;
 
-import dao.DataSource;
+import dao.ConnectionPool;
 import dao.PriceDAO;
 import dao.mysql.util.MessageUtil;
 import dao.mysql.util.QueryUtil;
@@ -37,17 +37,11 @@ class MySQLPriceDAO implements PriceDAO{
         try{
             String findAllQuery = QueryUtil.createFindAllQuery(TABLE_NAME);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
             ResultSet set = statement.executeQuery(findAllQuery);
             while (set.next()){
-                Price price = new Price();
-                price.setId(set.getLong(LABEL_ID));
-                price.setBerth_factor(set.getDouble(LABEL_BERTH_FACTOR));
-                price.setCompartment_factor(set.getDouble(LABEL_COMPARTMENT_FACTOR));
-                price.setDeluxe_factor(set.getDouble(LABEL_DELUXE_FACTOR));
-
-                result.add(price);
+                result.add(getPrice(set));
             }
             LOG.info(MessageUtil.createInfoFindAll(TABLE_NAME));
 
@@ -69,16 +63,12 @@ class MySQLPriceDAO implements PriceDAO{
         try{
             String findByIdQuery = QueryUtil.createFindByParameterQuery(TABLE_NAME, LABEL_ID);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(findByIdQuery);
             statement.setLong(1, id);
             ResultSet set = statement.executeQuery();
             if (set.next()){
-                result = new Price();
-                result.setId(set.getLong(LABEL_ID));
-                result.setBerth_factor(set.getDouble(LABEL_BERTH_FACTOR));
-                result.setCompartment_factor(set.getDouble(LABEL_BERTH_FACTOR));
-                result.setDeluxe_factor(set.getDouble(LABEL_DELUXE_FACTOR));
+                result = getPrice(set);
             }
         } catch (SQLException e){
             LOG.error(MessageUtil.createErrorFindByParameter(TABLE_NAME, LABEL_ID, id));
@@ -102,7 +92,7 @@ class MySQLPriceDAO implements PriceDAO{
                     LABEL_COMPARTMENT_FACTOR,
                     LABEL_DELUXE_FACTOR);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
 
             statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
             statement.setDouble(1, price.getBerth_factor());
@@ -136,7 +126,7 @@ class MySQLPriceDAO implements PriceDAO{
                     LABEL_COMPARTMENT_FACTOR,
                     LABEL_DELUXE_FACTOR);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
 
             statement = connection.prepareStatement(updateQuery);
             statement.setDouble(1, price.getBerth_factor());
@@ -163,7 +153,7 @@ class MySQLPriceDAO implements PriceDAO{
         try{
             String deleteQuery = QueryUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
 
-            connection = DataSource.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(deleteQuery);
             statement.setLong(1, price.getId());
             statement.executeUpdate();
@@ -184,6 +174,16 @@ class MySQLPriceDAO implements PriceDAO{
         } catch (SQLException e) {
             LOG.error(MessageUtil.createErrorClose());
         }
+    }
+
+    private Price getPrice(ResultSet set) throws SQLException{
+        Price result = new Price();
+        result.setId(set.getLong(LABEL_ID));
+        result.setBerth_factor(set.getDouble(LABEL_BERTH_FACTOR));
+        result.setCompartment_factor(set.getDouble(LABEL_BERTH_FACTOR));
+        result.setDeluxe_factor(set.getDouble(LABEL_DELUXE_FACTOR));
+
+        return result;
     }
 
 }
