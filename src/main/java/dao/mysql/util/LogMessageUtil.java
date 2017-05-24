@@ -22,12 +22,13 @@ public class LogMessageUtil {
 
     /**
      * @param tableName
-     * @return Successful Find All
+     * @return Successful Find All {tableName}
      */
     public static String createInfoFindAll(String tableName){
         StringBuilder builder = new StringBuilder();
         builder.append(SUCCESSFUL).append(SPACE);
-        builder.append(FIND_ALL);
+        builder.append(FIND_ALL).append(SPACE);
+        builder.append(tableName.toUpperCase());
 
         return builder.toString();
     }

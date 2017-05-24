@@ -12,7 +12,6 @@ import java.util.Date;
 public class Train {
     private Long id;
     private Long route_id;
-    private Date date;
 
     private Long compartment_free;
     private Long deluxe_free;

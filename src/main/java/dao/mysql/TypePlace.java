@@ -1,19 +1,19 @@
 package dao.mysql;
 
 public enum TypePlace {
-    BERTH{
+    B{
         @Override
         public String toString() {
             return "B";
         }
     },
-    COMPARTMENT{
+    C{
         @Override
         public String toString() {
             return "C";
         }
     },
-    DELUXE{
+    L{
         @Override
         public String toString() {
             return "L";

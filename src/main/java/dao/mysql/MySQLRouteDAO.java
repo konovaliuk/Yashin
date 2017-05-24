@@ -17,7 +17,7 @@ class MySQLRouteDAO implements RouteDAO{
     private static final Log LOG = LogFactory.getLog(MySQLPriceDAO.class);
     private static final MySQLRouteDAO INSTANCE = new MySQLRouteDAO();
 
-    private static final String TABLE_NAME = "request";
+    private static final String TABLE_NAME = "route";
 
     private static final String LABEL_ID = "id";
     private static final String LABEL_PRICE_ID = "price_id";

@@ -91,6 +91,7 @@ class MySQLRequestDAO implements RequestDAO{
             statement.setLong(2, request.getTrain_id());
             statement.setLong(3, request.getPrice());
             statement.setString(4, request.getType());
+
             statement.executeUpdate();
 
             ResultSet set = statement.getGeneratedKeys();
@@ -127,6 +128,7 @@ class MySQLRequestDAO implements RequestDAO{
             statement.setLong(2, request.getTrain_id());
             statement.setLong(3, request.getPrice());
             statement.setString(4, request.getType());
+
             statement.setLong(5, request.getId());
 
             statement.executeUpdate();
