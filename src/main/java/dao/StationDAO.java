@@ -9,7 +9,7 @@ public interface StationDAO {
     Station findById(Long id);
 
 
-    Station create(Station route);
-    Station update(Station route);
-    void delete(Station route);
+    Station create(Station station);
+    Station update(Station station);
+    void delete(Station station);
 }

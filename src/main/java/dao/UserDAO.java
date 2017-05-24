@@ -9,7 +9,7 @@ public interface UserDAO {
     List<User> findAdmins();
     List<User> findUsers();
     User findById(Long id);
-    User findByLogin(String login);
+    User findByEmail(String login);
 
     User create(User user);
     User update(User user);

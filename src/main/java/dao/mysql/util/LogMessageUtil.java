@@ -1,6 +1,6 @@
 package dao.mysql.util;
 
-public class MessageUtil {
+public class LogMessageUtil {
     private static final String CREATE = "CREATE";
     private static final String UPDATE = "UPDATE";
     private static final String DELETE = "DELETE";

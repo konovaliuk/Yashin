@@ -14,7 +14,7 @@ class MySQLTrainDAO implements TrainDAO{
 
     private MySQLTrainDAO(){}
 
-    public static MySQLTrainDAO getInstance(){
+    static MySQLTrainDAO getInstance(){
         return INSTANCE;
     }
 

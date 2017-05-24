@@ -2,12 +2,13 @@ package dao.mysql;
 
 import dao.ConnectionPool;
 import dao.RouteDAO;
-import dao.mysql.util.MessageUtil;
+import dao.mysql.util.LogMessageUtil;
 import dao.mysql.util.QueryUtil;
 import entity.Route;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +54,9 @@ class MySQLRouteDAO implements RouteDAO{
                 result.add(getRoute(set));
             }
 
-            LOG.info(MessageUtil.createInfoFindAll(TABLE_NAME));
+            LOG.info(LogMessageUtil.createInfoFindAll(TABLE_NAME));
         } catch (SQLException e){
-            LOG.error(MessageUtil.createErrorFindAll(TABLE_NAME));
+            LOG.error(LogMessageUtil.createErrorFindAll(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -112,9 +113,9 @@ class MySQLRouteDAO implements RouteDAO{
                 route.setId(set.getLong(1));
             }
 
-            LOG.info(MessageUtil.createInfoCreate(TABLE_NAME, route.getId()));
+            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, route.getId()));
         } catch (SQLException e) {
-            LOG.error(MessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -152,9 +153,9 @@ class MySQLRouteDAO implements RouteDAO{
 
             statement.executeUpdate();
 
-            LOG.info(MessageUtil.createInfoCreate(TABLE_NAME, route.getId()));
+            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, route.getId()));
         } catch (SQLException e) {
-            LOG.error(MessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -176,22 +177,14 @@ class MySQLRouteDAO implements RouteDAO{
             statement.setLong(1, route.getId());
             statement.executeUpdate();
 
-            LOG.info(MessageUtil.createInfoDelete(TABLE_NAME, route.getId()));
+            LOG.info(LogMessageUtil.createInfoDelete(TABLE_NAME, route.getId()));
         } catch (SQLException e) {
-            LOG.error(MessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
     }
 
-    private void close(Connection connection, Statement statement){
-        try {
-            if (connection != null) connection.close();
-            if (statement!= null) statement.close();
-        } catch (SQLException e) {
-            LOG.error(MessageUtil.createErrorClose());
-        }
-    }
 
     private Route getRoute(ResultSet set) throws SQLException{
         Route result = new Route();
@@ -211,7 +204,7 @@ class MySQLRouteDAO implements RouteDAO{
     }
 
     private List<Route> findByParameter(String label, Long parameter){
-        List<Route> result = null;
+        List<Route> result = new ArrayList<>();
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -226,13 +219,25 @@ class MySQLRouteDAO implements RouteDAO{
                 result.add(getRoute(set));
             }
 
-            LOG.info(MessageUtil.createInfoFindByParameter(TABLE_NAME, label, parameter));
+            LOG.info(LogMessageUtil.createInfoFindByParameter(TABLE_NAME, label, parameter));
         } catch (SQLException e){
-            LOG.error(MessageUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
+            LOG.error(LogMessageUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
+            result = null;
         } finally {
             close(connection, statement);
         }
 
         return result;
     }
+
+
+    private void close(Connection connection, Statement statement){
+        try {
+            if (connection != null) connection.close();
+            if (statement!= null) statement.close();
+        } catch (SQLException e) {
+            LOG.error(LogMessageUtil.createErrorClose());
+        }
+    }
+
 }

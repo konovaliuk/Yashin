@@ -4,19 +4,19 @@ public enum TypePlace {
     BERTH{
         @Override
         public String toString() {
-            return "BERTH";
+            return "B";
         }
     },
     COMPARTMENT{
         @Override
         public String toString() {
-            return "COMPARTMENT";
+            return "C";
         }
     },
     DELUXE{
         @Override
         public String toString() {
-            return "DELUXE";
+            return "L";
         }
     }
 }

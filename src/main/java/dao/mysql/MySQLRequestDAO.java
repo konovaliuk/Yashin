@@ -2,7 +2,7 @@ package dao.mysql;
 
 import dao.ConnectionPool;
 import dao.RequestDAO;
-import dao.mysql.util.MessageUtil;
+import dao.mysql.util.LogMessageUtil;
 import dao.mysql.util.QueryUtil;
 import entity.Request;
 import org.apache.commons.logging.Log;
@@ -46,9 +46,9 @@ class MySQLRequestDAO implements RequestDAO{
             while (set.next()){
                 result.add(getRequest(set));
             }
-            LOG.info(MessageUtil.createInfoFindAll(TABLE_NAME));
+            LOG.info(LogMessageUtil.createInfoFindAll(TABLE_NAME));
         } catch (SQLException e){
-            LOG.error(MessageUtil.createErrorFindAll(TABLE_NAME));
+            LOG.error(LogMessageUtil.createErrorFindAll(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -98,9 +98,9 @@ class MySQLRequestDAO implements RequestDAO{
                 request.setId(set.getLong(1));
             }
 
-            LOG.info(MessageUtil.createInfoCreate(TABLE_NAME, request.getId()));
+            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, request.getId()));
         } catch (SQLException e) {
-            LOG.error(MessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -131,9 +131,9 @@ class MySQLRequestDAO implements RequestDAO{
 
             statement.executeUpdate();
 
-            LOG.info(MessageUtil.createInfoCreate(TABLE_NAME, request.getId()));
+            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, request.getId()));
         } catch (SQLException e) {
-            LOG.error(MessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -155,9 +155,9 @@ class MySQLRequestDAO implements RequestDAO{
             statement.setLong(1, request.getId());
             statement.executeUpdate();
 
-            LOG.info(MessageUtil.createInfoDelete(TABLE_NAME, request.getId()));
+            LOG.info(LogMessageUtil.createInfoDelete(TABLE_NAME, request.getId()));
         } catch (SQLException e) {
-            LOG.error(MessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -169,7 +169,7 @@ class MySQLRequestDAO implements RequestDAO{
             if (connection != null) connection.close();
             if (statement!= null) statement.close();
         } catch (SQLException e) {
-            LOG.error(MessageUtil.createErrorClose());
+            LOG.error(LogMessageUtil.createErrorClose());
         }
     }
 
@@ -189,9 +189,9 @@ class MySQLRequestDAO implements RequestDAO{
             while (set.next()){
                 result.add(getRequest(set));
             }
-            LOG.info(MessageUtil.createInfoFindByParameter(TABLE_NAME, parameterLabel, id));
+            LOG.info(LogMessageUtil.createInfoFindByParameter(TABLE_NAME, parameterLabel, id));
         } catch (SQLException e){
-            LOG.error(MessageUtil.createErrorFindByParameter(TABLE_NAME, parameterLabel, id));
+            LOG.error(LogMessageUtil.createErrorFindByParameter(TABLE_NAME, parameterLabel, id));
         } finally {
             close(connection, statement);
         }
