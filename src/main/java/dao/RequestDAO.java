@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Request;
+import model.entity.Request;
 
 import java.util.List;
 

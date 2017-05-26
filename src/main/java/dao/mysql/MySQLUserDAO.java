@@ -2,9 +2,9 @@ package dao.mysql;
 
 import dao.ConnectionPool;
 import dao.UserDAO;
-import dao.mysql.util.LogMessageUtil;
+import dao.mysql.util.LogMessageDAOUtil;
 import dao.mysql.util.QueryUtil;
-import entity.User;
+import model.entity.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -50,24 +50,14 @@ class MySQLUserDAO implements UserDAO{
                 result.add(getUser(set));
             }
 
-            LOG.info(LogMessageUtil.createInfoFindAll(TABLE_NAME));
+            LOG.info(LogMessageDAOUtil.createInfoFindAll(TABLE_NAME));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorFindAll(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorFindAll(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
 
         return result;
-    }
-
-    @Override
-    public List<User> findAdmins() {
-        return findByParameter(LABEL_ADMIN, true);
-    }
-
-    @Override
-    public List<User> findUsers() {
-        return findByParameter(LABEL_ADMIN, false);
     }
 
     @Override
@@ -121,9 +111,9 @@ class MySQLUserDAO implements UserDAO{
                 user.setId(set.getLong(1));
             }
 
-            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, user.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, user.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -168,9 +158,9 @@ class MySQLUserDAO implements UserDAO{
                 user.setId(set.getLong(1));
             }
 
-            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, user.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, user.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -192,9 +182,9 @@ class MySQLUserDAO implements UserDAO{
             statement.setLong(1, user.getId());
             statement.executeUpdate();
 
-            LOG.info(LogMessageUtil.createInfoDelete(TABLE_NAME, user.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoDelete(TABLE_NAME, user.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -205,7 +195,7 @@ class MySQLUserDAO implements UserDAO{
             if (connection != null) connection.close();
             if (statement!= null) statement.close();
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorClose());
+            LOG.error(LogMessageDAOUtil.createErrorClose());
         }
     }
 
@@ -239,9 +229,9 @@ class MySQLUserDAO implements UserDAO{
                 result.add(getUser(set));
             }
 
-            LOG.info(LogMessageUtil.createInfoFindByParameter(TABLE_NAME, label, parameter));
+            LOG.info(LogMessageDAOUtil.createInfoFindByParameter(TABLE_NAME, label, parameter));
         } catch (SQLException e){
-            LOG.error(LogMessageUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
+            LOG.error(LogMessageDAOUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
         } finally {
             close(connection, statement);
         }

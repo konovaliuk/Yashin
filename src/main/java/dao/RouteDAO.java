@@ -1,7 +1,6 @@
 package dao;
 
-import entity.Route;
-import entity.Train;
+import model.entity.Route;
 
 import java.util.List;
 

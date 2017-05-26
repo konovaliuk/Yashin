@@ -1,9 +1,7 @@
 package dao;
 
-import entity.Price;
-import entity.Train;
+import model.entity.Train;
 
-import java.util.Date;
 import java.util.List;
 
 public interface TrainDAO {

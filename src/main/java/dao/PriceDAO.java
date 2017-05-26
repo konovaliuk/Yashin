@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Price;
+import model.entity.Price;
 
 import java.util.List;
 

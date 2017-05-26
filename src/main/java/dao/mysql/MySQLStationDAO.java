@@ -2,10 +2,9 @@ package dao.mysql;
 
 import dao.ConnectionPool;
 import dao.StationDAO;
-import dao.mysql.util.LogMessageUtil;
+import dao.mysql.util.LogMessageDAOUtil;
 import dao.mysql.util.QueryUtil;
-import entity.Route;
-import entity.Station;
+import model.entity.Station;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -46,9 +45,9 @@ class MySQLStationDAO implements StationDAO{
                 result.add(getStation(set));
             }
 
-            LOG.info(LogMessageUtil.createInfoFindAll(TABLE_NAME));
+            LOG.info(LogMessageDAOUtil.createInfoFindAll(TABLE_NAME));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorFindAll(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorFindAll(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -73,9 +72,9 @@ class MySQLStationDAO implements StationDAO{
                 result = getStation(set);
             }
 
-            LOG.info(LogMessageUtil.createInfoFindByParameter(TABLE_NAME, LABEL_ID, id));
+            LOG.info(LogMessageDAOUtil.createInfoFindByParameter(TABLE_NAME, LABEL_ID, id));
         } catch (SQLException e){
-            LOG.error(LogMessageUtil.createErrorFindByParameter(TABLE_NAME, LABEL_ID, id));
+            LOG.error(LogMessageDAOUtil.createErrorFindByParameter(TABLE_NAME, LABEL_ID, id));
         } finally {
             close(connection, statement);
         }
@@ -106,9 +105,9 @@ class MySQLStationDAO implements StationDAO{
                 station.setId(set.getLong(1));
             }
 
-            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, station.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, station.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -137,9 +136,9 @@ class MySQLStationDAO implements StationDAO{
 
             statement.executeUpdate();
 
-            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, station.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, station.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -161,9 +160,9 @@ class MySQLStationDAO implements StationDAO{
             statement.setLong(1, station.getId());
             statement.executeUpdate();
 
-            LOG.info(LogMessageUtil.createInfoDelete(TABLE_NAME, station.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoDelete(TABLE_NAME, station.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -183,7 +182,7 @@ class MySQLStationDAO implements StationDAO{
             if (connection != null) connection.close();
             if (statement!= null) statement.close();
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorClose());
+            LOG.error(LogMessageDAOUtil.createErrorClose());
         }
     }
 

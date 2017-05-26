@@ -2,17 +2,14 @@ package dao.mysql;
 
 import dao.ConnectionPool;
 import dao.TrainDAO;
-import dao.mysql.util.LogMessageUtil;
+import dao.mysql.util.LogMessageDAOUtil;
 import dao.mysql.util.QueryUtil;
-import entity.Station;
-import entity.Train;
-import entity.User;
+import model.entity.Train;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 class MySQLTrainDAO implements TrainDAO{
@@ -51,9 +48,9 @@ class MySQLTrainDAO implements TrainDAO{
                 result.add(getTrain(set));
             }
 
-            LOG.info(LogMessageUtil.createInfoFindAll(TABLE_NAME));
+            LOG.info(LogMessageDAOUtil.createInfoFindAll(TABLE_NAME));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorFindAll(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorFindAll(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -103,9 +100,9 @@ class MySQLTrainDAO implements TrainDAO{
                 train.setId(set.getLong(1));
             }
 
-            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, train.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, train.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -141,9 +138,9 @@ class MySQLTrainDAO implements TrainDAO{
 
             statement.executeUpdate();
 
-            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, train.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, train.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -172,9 +169,9 @@ class MySQLTrainDAO implements TrainDAO{
                 result.add(getTrain(set));
             }
 
-            LOG.info(LogMessageUtil.createInfoFindByParameter(TABLE_NAME, label, parameter));
+            LOG.info(LogMessageDAOUtil.createInfoFindByParameter(TABLE_NAME, label, parameter));
         } catch (SQLException e){
-            LOG.error(LogMessageUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
+            LOG.error(LogMessageDAOUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
         } finally {
             close(connection, statement);
         }
@@ -199,7 +196,7 @@ class MySQLTrainDAO implements TrainDAO{
             if (connection != null) connection.close();
             if (statement!= null) statement.close();
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorClose());
+            LOG.error(LogMessageDAOUtil.createErrorClose());
         }
     }
 

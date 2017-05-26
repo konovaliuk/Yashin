@@ -2,9 +2,9 @@ package dao.mysql;
 
 import dao.ConnectionPool;
 import dao.PriceDAO;
-import dao.mysql.util.LogMessageUtil;
+import dao.mysql.util.LogMessageDAOUtil;
 import dao.mysql.util.QueryUtil;
-import entity.Price;
+import model.entity.Price;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -43,10 +43,10 @@ class MySQLPriceDAO implements PriceDAO{
             while (set.next()){
                 result.add(getPrice(set));
             }
-            LOG.info(LogMessageUtil.createInfoFindAll(TABLE_NAME));
+            LOG.info(LogMessageDAOUtil.createInfoFindAll(TABLE_NAME));
 
         } catch (SQLException e){
-            LOG.error(LogMessageUtil.createErrorFindAll(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorFindAll(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -71,7 +71,7 @@ class MySQLPriceDAO implements PriceDAO{
                 result = getPrice(set);
             }
         } catch (SQLException e){
-            LOG.error(LogMessageUtil.createErrorFindByParameter(TABLE_NAME, LABEL_ID, id));
+            LOG.error(LogMessageDAOUtil.createErrorFindByParameter(TABLE_NAME, LABEL_ID, id));
         } finally {
             close(connection, statement);
         }
@@ -105,9 +105,9 @@ class MySQLPriceDAO implements PriceDAO{
                 price.setId(set.getLong(1));
             }
 
-            LOG.info(LogMessageUtil.createInfoCreate(TABLE_NAME, price.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, price.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorCreate(TABLE_NAME));
+            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -136,9 +136,9 @@ class MySQLPriceDAO implements PriceDAO{
 
             statement.executeUpdate();
 
-            LOG.info(LogMessageUtil.createInfoUpdate(TABLE_NAME, price.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, price.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorUpdate(TABLE_NAME, price.getId()));
+            LOG.error(LogMessageDAOUtil.createErrorUpdate(TABLE_NAME, price.getId()));
         } finally {
             close(connection, statement);
         }
@@ -159,9 +159,9 @@ class MySQLPriceDAO implements PriceDAO{
             statement.setLong(1, price.getId());
             statement.executeUpdate();
 
-            LOG.info(LogMessageUtil.createInfoDelete(TABLE_NAME, price.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoDelete(TABLE_NAME, price.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorDelete(TABLE_NAME, price.getId()));
+            LOG.error(LogMessageDAOUtil.createErrorDelete(TABLE_NAME, price.getId()));
         } finally {
             close(connection, statement);
         }
@@ -173,7 +173,7 @@ class MySQLPriceDAO implements PriceDAO{
             if (connection != null) connection.close();
             if (statement!= null) statement.close();
         } catch (SQLException e) {
-            LOG.error(LogMessageUtil.createErrorClose());
+            LOG.error(LogMessageDAOUtil.createErrorClose());
         }
     }
 
