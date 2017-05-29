@@ -15,8 +15,7 @@ import java.util.List;
 public class TrainService {
     private static final Log LOG = LogFactory.getLog(TrainService.class);
     private static final DataBase DB = DataBase.MYSQL;
-    private static final TrainService INSTANCE = new TrainService();
-
+    private static TrainService INSTANCE;
 
     private DAOFactory factory;
 
@@ -25,9 +24,16 @@ public class TrainService {
     }
 
     public static TrainService getInstance(){
+        if(INSTANCE == null){
+            synchronized (TrainService.class){
+                if (INSTANCE == null){
+                    INSTANCE = new TrainService();
+                }
+            }
+        }
+
         return INSTANCE;
     }
-
     public List<Train> getTrainsForRoutes(List<Route> routes){
         List<Train> result = new ArrayList<>();
 

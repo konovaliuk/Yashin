@@ -2,6 +2,7 @@ package dao;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import util.Config;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,12 +16,11 @@ public class ConnectionPool {
     private DataSource source;
 
     private ConnectionPool() throws SQLException{
-        ResourceBundle bundle = ResourceBundle.getBundle("jdbc");
         properties = new PoolProperties();
-        properties.setDriverClassName(bundle.getString("jdbc.driverClassName"));
-        properties.setUrl(bundle.getString("jdbc.url") + bundle.getString("jdbc.database"));
-        properties.setUsername(bundle.getString("jdbc.username"));
-        properties.setPassword(bundle.getString("jdbc.password"));
+        properties.setDriverClassName(Config.getInstance().getConfig(Config.DRIVER_CLASS_NAME));
+        properties.setUrl(Config.getInstance().getConfig(Config.URL) + Config.getInstance().getConfig(Config.DATABASE));
+        properties.setUsername(Config.getInstance().getConfig(Config.USERNAME));
+        properties.setPassword(Config.getInstance().getConfig(Config.PASSWORD));
 
         source = new DataSource();
         source.setPoolProperties(properties);

@@ -8,11 +8,14 @@ import service.RequestService;
 import service.RouteService;
 import service.TrainService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
+
         DAOFactory factory = AbstractDAOFactory.createDAOFactory(DataBase.MYSQL);
 //
 //        PriceDAO priceDAO = factory.createPriceDAO();
@@ -64,43 +67,43 @@ public class Main {
 //        System.out.println(userDAO.findUsers());
 //        System.out.println(userDAO.findByEmail("root"));
 //        System.out.println(userDAO.findById(2l));
-
-
-        List<Station> fromStations = RouteService.getInstance().getAvailableFromStations();
-        System.out.println(fromStations);
-
-        Station from = fromStations.get(2);
-        List<Station> toStations = RouteService.getInstance().getAvailableToStations(from);
-        Station to = toStations.get(0);
-
-        System.out.println(to);
-
-        List<Route> routes = RouteService.getInstance().findRouteByStations(from, to);
-        System.out.println(routes);
-
-        List<Route> routes1 = RouteService.getInstance().findRoutesFromTime(routes, new Date());
-
-        List<Train> trains = TrainService.getInstance().getTrainsForRoutes(routes1);
-        System.out.println(trains);
-
-        Train train = trains.get(0);
-        Route route = RouteService.getInstance().getRouteByTrain(train);
-
-        System.out.println(route);
-
-
-        System.out.println(RouteService.getInstance().getBerthPrice(route));
-        System.out.println(RouteService.getInstance().getCompartmentPrice(route));
-        System.out.println(RouteService.getInstance().getDeluxePrice(route));
-
-
-        Request request = new Request();
-        request.setUser_id(LoginService.getInstance().isPresentLogin("andy97@ukr.net").getId());
-        request.setTrain_id(train.getId());
-        request.setType(TypePlace.B);
-        request.setPrice(RouteService.getInstance().getBerthPrice(route));
-
-        RequestService.getInstance().addRequest(request);
+//
+//
+//        List<Station> fromStations = RouteService.getInstance().getAvailableFromStations();
+//        System.out.println(fromStations);
+//
+//        Station from = fromStations.get(2);
+//        List<Station> toStations = RouteService.getInstance().getAvailableToStations(from);
+//        Station to = toStations.get(0);
+//
+//        System.out.println(to);
+//
+//        List<Route> routes = RouteService.getInstance().findRouteByStations(from, to);
+//        System.out.println(routes);
+//
+//        List<Route> routes1 = RouteService.getInstance().findRoutesFromTime(routes, new Date(2016-1900, 5, 7));
+//
+//        List<Train> trains = TrainService.getInstance().getTrainsForRoutes(routes1);
+//        System.out.println(trains);
+//
+//        Train train = trains.get(0);
+//        Route route = RouteService.getInstance().getRouteByTrain(train);
+//
+//        System.out.println(route);
+//
+//
+//        System.out.println(RouteService.getInstance().getBerthPrice(route));
+//        System.out.println(RouteService.getInstance().getCompartmentPrice(route));
+//        System.out.println(RouteService.getInstance().getDeluxePrice(route));
+//
+//
+//        Request request = new Request();
+//        request.setUser_id(LoginService.getInstance().isPresentLogin("andy97@ukr.net").getId());
+//        request.setTrain_id(train.getId());
+//        request.setType(TypePlace.B);
+//        request.setPrice(RouteService.getInstance().getBerthPrice(route));
+//
+//        RequestService.getInstance().addRequest(request);
 
     }
 }

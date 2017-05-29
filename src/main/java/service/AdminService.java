@@ -15,7 +15,7 @@ import java.util.List;
 public class AdminService {
     private static final Log LOG = LogFactory.getLog(AdminService.class);
     private static final DataBase DB = DataBase.MYSQL;
-    private static final AdminService INSTANCE = new AdminService();
+    private static AdminService INSTANCE;
 
     private static final String USER_DAO = "UserDAO";
 
@@ -33,6 +33,14 @@ public class AdminService {
     }
 
     public static AdminService getInstance(){
+        if(INSTANCE == null){
+            synchronized (AdminService.class){
+                if (INSTANCE == null){
+                    INSTANCE = new AdminService();
+                }
+            }
+        }
+
         return INSTANCE;
     }
 

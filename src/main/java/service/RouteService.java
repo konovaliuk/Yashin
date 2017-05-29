@@ -17,7 +17,7 @@ import java.util.*;
 public class RouteService {
     private static final Log LOG = LogFactory.getLog(RouteService.class);
     private static final DataBase DB = DataBase.MYSQL;
-    private static final RouteService INSTANCE = new RouteService();
+    private static RouteService INSTANCE;
 
     private DAOFactory factory;
 
@@ -26,9 +26,16 @@ public class RouteService {
     }
 
     public static RouteService getInstance(){
+        if(INSTANCE == null){
+            synchronized (RouteService.class){
+                if (INSTANCE == null){
+                    INSTANCE = new RouteService();
+                }
+            }
+        }
+
         return INSTANCE;
     }
-
     public Route getRouteByTrain(Train train){
         return factory.createRouteDAO().findById(train.getRoute_id());
     }

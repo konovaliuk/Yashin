@@ -12,7 +12,7 @@ import service.util.LogMessageServiceUtil;
 public class LoginService {
     private static final Log LOG = LogFactory.getLog(LoginService.class);
     private static final DataBase DB = DataBase.MYSQL;
-    private static final LoginService INSTANCE = new LoginService();
+    private static LoginService INSTANCE;
 
     private static final String USER_DAO = "UserDAO";
 
@@ -26,6 +26,14 @@ public class LoginService {
     }
 
     public static LoginService getInstance(){
+        if(INSTANCE == null){
+            synchronized (LoginService.class){
+                if (INSTANCE == null){
+                    INSTANCE = new LoginService();
+                }
+            }
+        }
+
         return INSTANCE;
     }
 

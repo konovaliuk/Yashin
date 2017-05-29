@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
 public class RequestService {
     private static final Log LOG = LogFactory.getLog(RequestService.class);
     private static final DataBase DB = DataBase.MYSQL;
-    private static final RequestService INSTANCE = new RequestService();
+    private static RequestService INSTANCE;
 
     private DAOFactory factory;
 
@@ -21,6 +21,14 @@ public class RequestService {
     }
 
     public static RequestService getInstance(){
+        if(INSTANCE == null){
+            synchronized (RequestService.class){
+                if (INSTANCE == null){
+                    INSTANCE = new RequestService();
+                }
+            }
+        }
+
         return INSTANCE;
     }
 
