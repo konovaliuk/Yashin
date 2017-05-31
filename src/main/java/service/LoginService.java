@@ -17,7 +17,7 @@ public class LoginService {
     private static final String USER_DAO = "UserDAO";
 
     private static final String ADD_USER = "addUser()";
-    private static final String IS_PRESENT_LOGIN = "addUser()";
+    private static final String IS_PRESENT_LOGIN = "isPresentUser()";
 
     private DAOFactory factory;
 
@@ -43,11 +43,11 @@ public class LoginService {
         return user;
     }
 
-    public User addUser(User user) throws InvalidDataBaseOperation{
+    public User addUser(User user){
         User createdUser = factory.createUserDAO().create(user);
         if (createdUser == null){
             LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, ADD_USER));
-            throw new InvalidDataBaseOperation();
+            //throw new InvalidDataBaseOperation();
         }
 
         LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, ADD_USER));

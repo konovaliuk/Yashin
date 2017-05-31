@@ -65,7 +65,11 @@ class MySQLRouteDAO implements RouteDAO{
 
     @Override
     public Route findById(Long id) {
-        return findByParameter(LABEL_ID, id).get(0);
+        List<Route> result = findByParameter(LABEL_ID, id);
+        if(result.size() != 1)
+            return null;
+
+        return result.get(0);
     }
 
     @Override

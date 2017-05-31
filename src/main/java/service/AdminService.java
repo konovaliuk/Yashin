@@ -44,22 +44,22 @@ public class AdminService {
         return INSTANCE;
     }
 
-    public List<User> getAllUsers() throws InvalidDataBaseOperation{
+    public List<User> getAllUsers(){
         List<User> result = factory.createUserDAO().findAll();
         if(result == null){
             LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, GET_ALL_USERS));
-            throw new InvalidDataBaseOperation();
+            //throw new InvalidDataBaseOperation();
         }
 
         LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, GET_ALL_USERS));
         return result;
     }
 
-    public List<User> getUsers() throws InvalidDataBaseOperation{
+    public List<User> getUsers(){
         List<User> result = factory.createUserDAO().findAll();
         if(result == null){
             LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, GET_USERS));
-            throw new InvalidDataBaseOperation();
+            //throw new InvalidDataBaseOperation();
         } 
         
         List<User> users = new ArrayList<>();
@@ -72,11 +72,11 @@ public class AdminService {
         return users;
     }
 
-    public List<User> getAdmins() throws InvalidDataBaseOperation{
+    public List<User> getAdmins(){
         List<User> result = factory.createUserDAO().findAll();
         if(result == null){
             LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, GET_ADMINS));
-            throw new InvalidDataBaseOperation();
+            //throw new InvalidDataBaseOperation();
         }
 
         List<User> users = new ArrayList<>();
@@ -89,22 +89,22 @@ public class AdminService {
         return users;
     }
     
-    public User addUser(User user) throws InvalidDataBaseOperation{
+    public User addUser(User user){
         User createdUser = factory.createUserDAO().create(user);
         if (createdUser == null){
             LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, ADD_USER));
-            throw new InvalidDataBaseOperation();
+            //throw new InvalidDataBaseOperation();
         }
 
         LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, ADD_USER));
         return createdUser;
     }
     
-    public User updateUser(User user) throws InvalidDataBaseOperation{
+    public User updateUser(User user){
         User updatedUser = factory.createUserDAO().update(user);
         if (updatedUser == null){
             LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, UPDATE_USER));
-            throw new InvalidDataBaseOperation();
+            //throw new InvalidDataBaseOperation();
         }
 
         LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, UPDATE_USER));

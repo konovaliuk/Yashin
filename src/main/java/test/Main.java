@@ -69,11 +69,11 @@ public class Main {
 //        System.out.println(userDAO.findById(2l));
 //
 //
-//        List<Station> fromStations = RouteService.getInstance().getAvailableFromStations();
+//        List<Station> fromStations = RouteService.getInstance().findAvailableFromStations();
 //        System.out.println(fromStations);
 //
 //        Station from = fromStations.get(2);
-//        List<Station> toStations = RouteService.getInstance().getAvailableToStations(from);
+//        List<Station> toStations = RouteService.getInstance().findAvailableToStations(from);
 //        Station to = toStations.get(0);
 //
 //        System.out.println(to);
@@ -87,23 +87,22 @@ public class Main {
 //        System.out.println(trains);
 //
 //        Train train = trains.get(0);
-//        Route route = RouteService.getInstance().getRouteByTrain(train);
+//        Route route = RouteService.getInstance().findRouteByTrain(train);
 //
 //        System.out.println(route);
 //
 //
-//        System.out.println(RouteService.getInstance().getBerthPrice(route));
-//        System.out.println(RouteService.getInstance().getCompartmentPrice(route));
-//        System.out.println(RouteService.getInstance().getDeluxePrice(route));
+//        System.out.println(RouteService.getInstance().findBerthPrice(route));
+//        System.out.println(RouteService.getInstance().findCompartmentPrice(route));
+//        System.out.println(RouteService.getInstance().findDeluxePrice(route));
 //
 //
 //        Request request = new Request();
 //        request.setUser_id(LoginService.getInstance().isPresentLogin("andy97@ukr.net").getId());
 //        request.setTrain_id(train.getId());
 //        request.setType(TypePlace.B);
-//        request.setPrice(RouteService.getInstance().getBerthPrice(route));
+//        request.setPrice(RouteService.getInstance().findBerthPrice(route));
 //
 //        RequestService.getInstance().addRequest(request);
-
     }
 }

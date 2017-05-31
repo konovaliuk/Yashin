@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 class MySQLUserDAO implements UserDAO{
     private static final Log LOG = LogFactory.getLog(MySQLPriceDAO.class);
@@ -63,7 +64,7 @@ class MySQLUserDAO implements UserDAO{
     @Override
     public User findById(Long id) {
         List<User> result = findByParameter(LABEL_ID, id);
-        if(result.size() > 1)
+        if(result.size() != 1)
             return null;
 
         return result.get(0);
@@ -72,7 +73,7 @@ class MySQLUserDAO implements UserDAO{
     @Override
     public User findByEmail(String email) {
         List<User> result = findByParameter(LABEL_EMAIL, email);
-        if(result.size() > 1)
+        if(result.size() != 1)
             return null;
 
         return result.get(0);

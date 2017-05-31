@@ -30,6 +30,7 @@
                 </configuration>
             </plugin>
 
+
         </plugins>
     </build>
 
@@ -83,20 +84,14 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-
 
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
             <version>8.5.11</version>
         </dependency>
+
 
         <dependency>
             <groupId>junit</groupId>

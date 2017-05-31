@@ -68,7 +68,11 @@ class MySQLRequestDAO implements RequestDAO{
 
     @Override
     public Request findById(Long id) {
-        return findByParameter(id, LABEL_ID).get(0);
+        List<Request> result = findByParameter(id, LABEL_ID);
+        if(result.size() != 1)
+            return null;
+
+        return result.get(0);
     }
 
     @Override

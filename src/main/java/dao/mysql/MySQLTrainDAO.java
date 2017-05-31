@@ -68,6 +68,7 @@ class MySQLTrainDAO implements TrainDAO{
         List<Train> result = findByParameter(LABEL_ID, id);
         if(result.size() != 1)
             return null;
+
         return result.get(0);
     }
 

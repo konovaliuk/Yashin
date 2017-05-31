@@ -1,6 +1,7 @@
 package controller;
 
 import command.Command;
+import util.Config;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "controller", urlPatterns = "/")
 public class Controller extends HttpServlet {
     ControllerHelper controllerHelper = ControllerHelper.getInstance();
 
@@ -51,6 +51,7 @@ public class Controller extends HttpServlet {
         }
 
         //test for repository
+        response.setContentType("text/html");
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
