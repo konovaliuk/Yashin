@@ -16,9 +16,7 @@
           href="<c:url value="${pageContext.request.contextPath}/resources/css/style.css"/>"/>
 </head>
 <body>
-<div class="page">
-    <div class="form">
-<form action="/route" method="post" class="login-form">
+<form action="/route" method="post">
     <select name="from">
         <c:forEach items="${cityFrom}" var="fromItem">
             <option value="${fromItem.id}" ${from == fromItem.id ? 'selected' : ''}>${fromItem.name}</option>
@@ -66,41 +64,44 @@
         <br>No trains on this route
     </c:if>
     <c:if test="${not empty trains}">
-        <table>
-            <thead>
-                <td>Number</td>
-                <td>From / To</td>
-                <td>Departure</td>
-                <td>Arrival</td>
-                <td>Seats Available</td>
-            </thead>
-            <c:forEach items="${trains}" var="train">
-                <td>${train.train_id}</td>
-                <td>${train.fromCity} / ${train.toCity}</td>
-                <td>${train.fromDate}</td>
-                <td>${train.toDate}</td>
-                <td>
-                    <select name="${train.train_id}">
-                        <option value="none"></option>
-                        <c:if test="${train.compartment_free gt 0}">
-                            <option value="C">C (${train.compartment_free}) = ${train.compartment_price} UAH</option>
-                        </c:if>
+        <div class="table">
+            <table class="simple-little-table">
+                <tr>
+                    <th>Number</th>
+                    <th>From / To</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Seats Available</th>
+                </tr>
+                >
+                <c:forEach items="${trains}" var="train">
+                    <td>${train.train_id}</td>
+                    <td>${train.fromCity} / ${train.toCity}</td>
+                    <td>${train.fromDate}</td>
+                    <td>${train.toDate}</td>
+                    <td>
+                        <select name="train${train.train_id}">
+                            <option value="none"></option>
+                            <c:if test="${train.compartment_free gt 0}">
+                                <option value="C">C (${train.compartment_free}) = ${train.compartment_price}
+                                    UAH
+                                </option>
+                            </c:if>
 
-                        <c:if test="${train.berth_free gt 0}">
-                            <option value="B">B (${train.berth_free}) = ${train.berth_price} UAH</option>
-                        </c:if>
+                            <c:if test="${train.berth_free gt 0}">
+                                <option value="B">B (${train.berth_free}) = ${train.berth_price} UAH</option>
+                            </c:if>
 
-                        <c:if test="${train.deluxe_free gt 0}">
-                            <option value="L">L (${train.deluxe_free}) = ${train.deluxe_price} UAH</option>
-                        </c:if>
-                    </select>
-                </td>
-            </c:forEach>
-        </table>
+                            <c:if test="${train.deluxe_free gt 0}">
+                                <option value="L">L (${train.deluxe_free}) = ${train.deluxe_price} UAH</option>
+                            </c:if>
+                        </select>
+                    </td>
+                </c:forEach>
+            </table>
+        </div>
+        <input class="form" type="submit" name="command" value="Make tickets">
     </c:if>
-    <input type="submit" name="command" value="Make Tickets">
 </form>
-    </div>
-</div>
 </body>
 </html>

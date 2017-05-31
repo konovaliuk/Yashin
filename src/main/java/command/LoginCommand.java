@@ -9,6 +9,7 @@ import util.Config;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,29 +27,52 @@ public class LoginCommand implements Command {
         String password = request.getParameter(PASSWORD).trim();
 
         User user = LoginService.getInstance().isPresentLogin(email);
+
         if(user == null){
-            page = Config.getInstance().getConfig(Config.REGISTER);
+            page = redirectToRegister(request);
         } else {
             if (user.getPassword().equals(password)) {
                 if(user.isAdmin()){
-                    page = Config.getInstance().getConfig(Config.ADMIN);
-                    request.setAttribute("users", AdminService.getInstance().getAllUsers());
+                    page = redirectToAdminPage(request, user);
                 } else {
-                    page = Config.getInstance().getConfig(Config.DATE);
-                    request.setAttribute("cityFrom", RouteService.getInstance().findAvailableFromStations());
-                    request.setAttribute("cityTo", RouteService.getInstance().findAvailableToStations());
-                    request.setAttribute("trains", null);
-
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    request.setAttribute("d", format.format(new Date()));
-
+                    page = redirectToUserPage(request, user);
                 }
             } else {
-                request.setAttribute("errorMessage", "Invalid email or password");
-                page = Config.getInstance().getConfig(Config.LOGIN);
+                page = redirectToErrorPage(request);
             }
         }
 
         return page;
+    }
+
+    private String redirectToRegister(HttpServletRequest request){
+        return Config.getInstance().getConfig(Config.REGISTER);
+    }
+
+    private String redirectToAdminPage(HttpServletRequest request, User user){
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", user);
+
+        request.setAttribute("users", AdminService.getInstance().getAllUsers());
+        return Config.getInstance().getConfig(Config.ADMIN);
+    }
+
+    private String redirectToUserPage(HttpServletRequest request, User user){
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", user);
+        session.setMaxInactiveInterval(60);
+
+        request.setAttribute("cityFrom", RouteService.getInstance().findAvailableFromStations());
+        request.setAttribute("cityTo", RouteService.getInstance().findAvailableToStations());
+        request.setAttribute("trains", null);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        request.setAttribute("d", format.format(new Date()));
+        return Config.getInstance().getConfig(Config.DATE);
+    }
+
+    private String redirectToErrorPage(HttpServletRequest request){
+        request.setAttribute("errorMessage", "Invalid email or password");
+        return Config.getInstance().getConfig(Config.LOGIN);
     }
 }

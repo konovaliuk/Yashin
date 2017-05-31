@@ -37,6 +37,10 @@ public class RouteService {
         return INSTANCE;
     }
 
+    public Route findRouteById(Long id){
+        return factory.createRouteDAO().findById(id);
+    }
+
     public Route findRouteByTrain(Train train){
         return factory.createRouteDAO().findById(train.getRoute_id());
     }

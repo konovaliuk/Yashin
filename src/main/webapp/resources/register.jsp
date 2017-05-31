@@ -34,7 +34,7 @@
                 <c:out value="${requestScope.errorMessage}"/>
             </c:if>
             </br>
-            <input type="submit" value="Sign up" name="command"/>
+            <input class="form" type="submit" value="Sign up" name="command"/>
         </form>
     </div>
 </div>
