@@ -7,7 +7,7 @@
 
     <display-name>RailwaySystem</display-name>
     <welcome-file-list>
-        <welcome-file>/resources/jsp/login.jsp</welcome-file>
+        <welcome-file>/resources/login.jsp</welcome-file>
     </welcome-file-list>
 
     <servlet>

@@ -5,15 +5,15 @@ import dao.RouteDAO;
 import dao.mysql.util.LogMessageDAOUtil;
 import dao.mysql.util.QueryUtil;
 import model.entity.Route;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
+
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 class MySQLRouteDAO implements RouteDAO{
-    private static final Log LOG = LogFactory.getLog(MySQLPriceDAO.class);
+    private static final Logger LOG = Logger.getLogger(MySQLRouteDAO.class.getName());
     private static final MySQLRouteDAO INSTANCE = new MySQLRouteDAO();
 
     private static final String TABLE_NAME = "route";
@@ -55,7 +55,7 @@ class MySQLRouteDAO implements RouteDAO{
 
             LOG.info(LogMessageDAOUtil.createInfoFindAll(TABLE_NAME));
         } catch (SQLException e){
-            LOG.error(LogMessageDAOUtil.createErrorFindAll(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorFindAll(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -118,7 +118,7 @@ class MySQLRouteDAO implements RouteDAO{
 
             LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, route.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -158,7 +158,7 @@ class MySQLRouteDAO implements RouteDAO{
 
             LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, route.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -182,7 +182,7 @@ class MySQLRouteDAO implements RouteDAO{
 
             LOG.info(LogMessageDAOUtil.createInfoDelete(TABLE_NAME, route.getId()));
         } catch (SQLException e) {
-            LOG.error(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
         } finally {
             close(connection, statement);
         }
@@ -224,7 +224,7 @@ class MySQLRouteDAO implements RouteDAO{
 
             LOG.info(LogMessageDAOUtil.createInfoFindByParameter(TABLE_NAME, label, parameter));
         } catch (SQLException e){
-            LOG.error(LogMessageDAOUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
+            LOG.severe(LogMessageDAOUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
             result = null;
         } finally {
             close(connection, statement);
@@ -239,7 +239,7 @@ class MySQLRouteDAO implements RouteDAO{
             if (connection != null) connection.close();
             if (statement!= null) statement.close();
         } catch (SQLException e) {
-            LOG.error(LogMessageDAOUtil.createErrorClose());
+            LOG.severe(LogMessageDAOUtil.createErrorClose());
         }
     }
 

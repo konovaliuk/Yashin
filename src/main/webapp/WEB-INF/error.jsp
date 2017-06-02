@@ -12,6 +12,7 @@
     <title>Error</title>
 </head>
 <body>
+<h1>Ooops</h1>
 <h2>Something goes wrong :(</h2>
 <p hidden="hidden"><c:out value="${messageError}"/></p>
 

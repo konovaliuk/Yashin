@@ -19,6 +19,10 @@ import java.util.List;
 public class FromCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getSession().getAttribute("user") == null){
+            return Config.getInstance().getConfig(Config.LOGIN);
+        }
+
         String page = Config.getInstance().getConfig(Config.DATE);
         Long from_id = Long.parseLong(request.getParameter("from"));
         Long to_id = Long.parseLong(request.getParameter("to"));

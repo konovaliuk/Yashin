@@ -7,15 +7,14 @@ import model.entity.Price;
 import model.entity.Route;
 import model.entity.Station;
 import model.entity.Train;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class RouteService {
-    private static final Log LOG = LogFactory.getLog(RouteService.class);
+    private static final Logger LOG = Logger.getLogger(RouteService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;
     private static RouteService INSTANCE;
 
@@ -94,7 +93,7 @@ public class RouteService {
                 }
             }
         }catch (ParseException e){
-            LOG.error(e.getMessage());
+            LOG.severe(e.getMessage());
             e.printStackTrace();
         }
 

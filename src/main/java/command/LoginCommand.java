@@ -60,7 +60,7 @@ public class LoginCommand implements Command {
     private String redirectToUserPage(HttpServletRequest request, User user){
         HttpSession session = request.getSession(true);
         session.setAttribute("user", user);
-        session.setMaxInactiveInterval(60);
+        session.setMaxInactiveInterval(30*60);
 
         request.setAttribute("cityFrom", RouteService.getInstance().findAvailableFromStations());
         request.setAttribute("cityTo", RouteService.getInstance().findAvailableToStations());

@@ -17,6 +17,11 @@ public class AdminCommand implements Command {
     private static final String USER = "user";
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getSession(true).getAttribute("user") == null){
+            return Config.getInstance().getConfig(Config.LOGIN);
+        }
+        String page = null;
+
         List<User> users = AdminService.getInstance().getAllUsers();
         for(User user: users){
             String action = request.getParameter(user.getId().toString());
@@ -35,7 +40,7 @@ public class AdminCommand implements Command {
 
         users = AdminService.getInstance().getAllUsers();
         request.setAttribute("users", users);
-        String page = Config.getInstance().getConfig(Config.ADMIN);
+        page = Config.getInstance().getConfig(Config.ADMIN);
         return page;
     }
 }

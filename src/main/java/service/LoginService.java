@@ -3,14 +3,12 @@ package service;
 import dao.AbstractDAOFactory;
 import dao.DAOFactory;
 import dao.DataBase;
-import exception.InvalidDataBaseOperation;
 import model.entity.User;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import service.util.LogMessageServiceUtil;
+import java.util.logging.Logger;
 
 public class LoginService {
-    private static final Log LOG = LogFactory.getLog(LoginService.class);
+    private static final Logger LOG = Logger.getLogger(LoginService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;
     private static LoginService INSTANCE;
 
@@ -46,7 +44,7 @@ public class LoginService {
     public User addUser(User user){
         User createdUser = factory.createUserDAO().create(user);
         if (createdUser == null){
-            LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, ADD_USER));
+            LOG.severe(LogMessageServiceUtil.createMethodError(USER_DAO, ADD_USER));
             //throw new InvalidDataBaseOperation();
         }
 

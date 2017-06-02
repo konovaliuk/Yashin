@@ -3,13 +3,11 @@ package service;
 import dao.AbstractDAOFactory;
 import dao.DAOFactory;
 import dao.DataBase;
-import dao.StationDAO;
 import dto.TrainRoute;
 import model.entity.Route;
 import model.entity.Station;
 import model.entity.Train;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 public class TrainService {
-    private static final Log LOG = LogFactory.getLog(TrainService.class);
+    private static final Logger LOG = Logger.getLogger(TrainService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;
     private static TrainService INSTANCE;
 
@@ -116,19 +114,33 @@ public class TrainService {
     }
 
     public Train reserveCompartmentPlace(Train train){
-        train.setCompartment_free(train.getCompartment_free() - 1);
-        return factory.createTrainDAO().update(train);
+        return reserveCompartmentPlace(train, 1);
     }
 
 
     public Train reserveBerthPlace(Train train){
-        train.setCompartment_free(train.getBerth_free() - 1);
-        return factory.createTrainDAO().update(train);
+        return reserveBerthPlace(train, 1);
     }
 
 
     public Train reserveDeluxePlace(Train train){
-        train.setCompartment_free(train.getDeluxe_free() - 1);
+        return reserveDeluxePlace(train, 2);
+    }
+
+    public Train reserveCompartmentPlace(Train train, int count){
+        train.setCompartment_free(train.getCompartment_free() - count);
+        return factory.createTrainDAO().update(train);
+    }
+
+
+    public Train reserveBerthPlace(Train train, int count){
+        train.setCompartment_free(train.getBerth_free() - count);
+        return factory.createTrainDAO().update(train);
+    }
+
+
+    public Train reserveDeluxePlace(Train train, int count){
+        train.setCompartment_free(train.getDeluxe_free() - count);
         return factory.createTrainDAO().update(train);
     }
 

@@ -3,14 +3,17 @@ package service;
 import dao.AbstractDAOFactory;
 import dao.DAOFactory;
 import dao.DataBase;
+import dao.RequestDAO;
 import dao.mysql.TypePlace;
+import dto.Ticket;
 import model.entity.Request;
 import model.entity.Train;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class RequestService {
-    private static final Log LOG = LogFactory.getLog(RequestService.class);
+    private static final Logger LOG = Logger.getLogger(RequestDAO.class.getName());
     private static final DataBase DB = DataBase.MYSQL;
     private static RequestService INSTANCE;
 
@@ -55,5 +58,18 @@ public class RequestService {
         }
 
         return factory.createRequestDAO().create(request);
+    }
+
+    public void reserveTickets(final List<Ticket> tickets){
+        for (Ticket ticket: tickets){
+            Request request = new Request.RequestBuilder()
+                    .setPrice(ticket.getPrice())
+                    .setType(TypePlace.valueOf(ticket.getTypePlace()))
+                    .setUserId(ticket.getUser_id())
+                    .setTrainId(ticket.getTrain_id())
+                    .build();
+
+            ticket.setRequest_id(addRequest(request).getId());
+        }
     }
 }

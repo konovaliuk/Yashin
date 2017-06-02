@@ -9,6 +9,8 @@ public class Message {
 
     public static final String SERVLET_EXCEPTION = "message.servlet";
     public static final String IO_EXCEPTION = "message.io";
+    public static final String EXCEPTION = "message.exception";
+    public static final String PAGE_IS_NULL = "message.nullpage";
 
 
     private Message(){

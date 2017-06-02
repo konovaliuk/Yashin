@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class Ticket {
     private Long request_id;
     private Long train_id;
+    private Long user_id;
 
     private String name;
     private String surname;
@@ -20,5 +21,7 @@ public class Ticket {
     private String toCity;
 
     private String typePlace;
+    private Long max;
+
     private Double price;
 }

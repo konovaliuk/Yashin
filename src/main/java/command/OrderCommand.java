@@ -21,6 +21,10 @@ import java.util.List;
 public class OrderCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getSession().getAttribute("user") == null) {
+            return Config.getInstance().getConfig(Config.LOGIN);
+        }
+
         String page = Config.getInstance().getConfig(Config.ORDER);
         Long from_id = Long.parseLong(request.getParameter("from"));
         Long to_id = Long.parseLong(request.getParameter("to"));
@@ -38,9 +42,9 @@ public class OrderCommand implements Command {
 
         List<TrainRoute> trains = TrainService.getInstance().findTrainsAndRoutes(from_id, to_id, date);
         List<Ticket> tickets = new ArrayList<>();
-        for(TrainRoute trainRoute: trains){
+        for (TrainRoute trainRoute : trains) {
             String parameter = request.getParameter("train" + trainRoute.getTrain_id());
-            if(!parameter.equals("none")){
+            if (!parameter.equals("none")) {
                 Ticket ticket = new Ticket();
                 ticket.setTrain_id(trainRoute.getTrain_id());
 
@@ -54,31 +58,41 @@ public class OrderCommand implements Command {
                 ticket.setName(user.getName());
                 ticket.setSurname(user.getSurname());
 
-                ticket.setTypePlace(parameter);
                 Double price;
+                Long max;
                 Route route = RouteService.getInstance().findRouteById(trainRoute.getRoute_id());
                 switch (parameter){
                     case "C": {
+                        max = trainRoute.getCompartment_free();
                         price = RouteService.getInstance().findCompartmentPrice(route);
                         break;
                     }
                     case "L": {
+                        max = trainRoute.getDeluxe_free();
                         price = RouteService.getInstance().findDeluxePrice(route);
                         break;
                     }
                     default: {
+                        max = trainRoute.getBerth_free();
                         price = RouteService.getInstance().findBerthPrice(route);
                         break;
                     }
                 }
+                ticket.setMax(max);
+                ticket.setTypePlace(parameter);
                 ticket.setPrice(price);
-
+                ticket.setUser_id(user.getId());
                 tickets.add(ticket);
             }
 
         }
 
-        request.setAttribute("tickets", tickets);
+        if (tickets.isEmpty()){
+            request.setAttribute("noTickets", true);
+        } else{
+            request.setAttribute("tickets", tickets);
+            request.getSession(false).setAttribute("tickets", tickets);
+        }
         return page;
     }
 }

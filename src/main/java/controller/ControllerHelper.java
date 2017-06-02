@@ -21,6 +21,8 @@ public class ControllerHelper {
         commands.put(bundle.getString("command.inputFrom"), new FromCommand());
         commands.put(bundle.getString("command.confirm"), new OrderCommand());
         commands.put(bundle.getString("command.adminConfirm"), new AdminCommand());
+        commands.put(bundle.getString("command.logout"), new LogoutCommand());
+        commands.put(bundle.getString("command.ticket"), new BookTicketsCommand());
     }
 
     public static ControllerHelper getInstance() {

@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class Controller extends HttpServlet {
+    private static final Logger LOG = Logger.getLogger(Controller.class.getName());
     ControllerHelper controllerHelper = ControllerHelper.getInstance();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,22 +41,30 @@ public class Controller extends HttpServlet {
         String page = null;
         try {
             Command command = controllerHelper.getCommand(request);
-            if(request.getSession().getAttribute("user") == null){
-                page =  Config.getInstance().getConfig(Config.LOGIN);
-            } else {
-                page = command.execute(request, response);
-            }
+            page = command.execute(request, response);
+
         } catch (ServletException e) {
-            e.printStackTrace();
+            LOG.severe(e.getMessage());
             request.setAttribute("messageError", Message.getInstance().getMessage(Message.SERVLET_EXCEPTION));
+            page = Config.getInstance().getConfig(Config.ERROR);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e.getMessage());
             request.setAttribute("messageError", Message.getInstance().getMessage(Message.IO_EXCEPTION));
+            page = Config.getInstance().getConfig(Config.ERROR);
+
+        } catch (Exception e){
+            LOG.severe(e.getMessage());
+            request.setAttribute("messageError", Message.getInstance().getMessage(Message.EXCEPTION));
+            page = Config.getInstance().getConfig(Config.ERROR);
 
         }
 
-        response.setContentType("text/html");
+        if (page == null){
+            request.setAttribute("messageError", Message.getInstance().getMessage(Message.PAGE_IS_NULL));
+            page = Config.getInstance().getConfig(Config.ERROR);
+        }
+
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }

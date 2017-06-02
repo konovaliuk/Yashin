@@ -3,17 +3,15 @@ package service;
 import dao.AbstractDAOFactory;
 import dao.DAOFactory;
 import dao.DataBase;
-import exception.InvalidDataBaseOperation;
 import model.entity.User;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 import service.util.LogMessageServiceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminService {
-    private static final Log LOG = LogFactory.getLog(AdminService.class);
+    private static final Logger LOG = Logger.getLogger(AdminService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;
     private static AdminService INSTANCE;
 
@@ -47,7 +45,7 @@ public class AdminService {
     public List<User> getAllUsers(){
         List<User> result = factory.createUserDAO().findAll();
         if(result == null){
-            LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, GET_ALL_USERS));
+            LOG.severe(LogMessageServiceUtil.createMethodError(USER_DAO, GET_ALL_USERS));
             //throw new InvalidDataBaseOperation();
         }
 
@@ -58,7 +56,7 @@ public class AdminService {
     public List<User> getUsers(){
         List<User> result = factory.createUserDAO().findAll();
         if(result == null){
-            LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, GET_USERS));
+            LOG.severe(LogMessageServiceUtil.createMethodError(USER_DAO, GET_USERS));
             //throw new InvalidDataBaseOperation();
         } 
         
@@ -75,7 +73,7 @@ public class AdminService {
     public List<User> getAdmins(){
         List<User> result = factory.createUserDAO().findAll();
         if(result == null){
-            LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, GET_ADMINS));
+            LOG.severe(LogMessageServiceUtil.createMethodError(USER_DAO, GET_ADMINS));
             //throw new InvalidDataBaseOperation();
         }
 
@@ -92,28 +90,28 @@ public class AdminService {
     public User addUser(User user){
         User createdUser = factory.createUserDAO().create(user);
         if (createdUser == null){
-            LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, ADD_USER));
+            LOG.severe(LogMessageServiceUtil.createMethodError(USER_DAO, ADD_USER));
             //throw new InvalidDataBaseOperation();
         }
 
-        LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, ADD_USER));
+        LOG.fine(LogMessageServiceUtil.createMethodInfo(USER_DAO, ADD_USER));
         return createdUser;
     }
     
     public User updateUser(User user){
         User updatedUser = factory.createUserDAO().update(user);
         if (updatedUser == null){
-            LOG.error(LogMessageServiceUtil.createMethodError(USER_DAO, UPDATE_USER));
+            LOG.severe(LogMessageServiceUtil.createMethodError(USER_DAO, UPDATE_USER));
             //throw new InvalidDataBaseOperation();
         }
 
-        LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, UPDATE_USER));
+        LOG.fine(LogMessageServiceUtil.createMethodInfo(USER_DAO, UPDATE_USER));
         return updatedUser;
     }
     
     public void deleteUser(User user){
         factory.createUserDAO().delete(user);
-        LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, DELETE_USER));
+        LOG.fine(LogMessageServiceUtil.createMethodInfo(USER_DAO, DELETE_USER));
     }
 
 }

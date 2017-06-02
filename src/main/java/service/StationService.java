@@ -5,11 +5,10 @@ import dao.DAOFactory;
 import dao.DataBase;
 import model.entity.Route;
 import model.entity.Station;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 public class StationService {
-    private static final Log LOG = LogFactory.getLog(StationService.class);
+    private static final Logger LOG = Logger.getLogger(StationService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;
     private static StationService INSTANCE;
 

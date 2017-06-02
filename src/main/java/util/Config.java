@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class Config {
@@ -18,6 +20,8 @@ public class Config {
     public static final String DATE = "config.date";
     public static final String ADMIN = "config.admin";
     public static final String ORDER = "config.order";
+    public static final String ERROR = "config.error";
+    public static final String TICKET = "config.ticket";
 
     private Config(){
         bundle = ResourceBundle.getBundle(BUNDLE_NAME);
