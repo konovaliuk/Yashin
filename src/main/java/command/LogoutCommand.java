@@ -1,6 +1,6 @@
 package command;
 
-import util.Config;
+import util.Configuration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,12 +11,11 @@ import java.io.IOException;
 public class LogoutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page = Config.getInstance().getConfig(Config.LOGIN);
+        String page = Configuration.getInstance().getConfig(Configuration.LOGIN);
         HttpSession session = request.getSession(false);
-        if(session != null){
+        if(session.getAttribute("user") != null){
             session.invalidate();
         }
-
         return page;
     }
 }

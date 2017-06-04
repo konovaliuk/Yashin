@@ -1,6 +1,6 @@
 package dao.mysql.util;
 
-public class QueryUtil {
+public class QueryDAOUtil {
     private static final String SELECT = "SELECT";
     private static final String UPDATE = "UPDATE";
     private static final String DELETE = "DELETE";

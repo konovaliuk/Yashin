@@ -1,25 +1,23 @@
-package command;
+package command.admin;
 
+import command.Command;
 import model.entity.User;
 import service.AdminService;
-import util.Config;
+import util.Configuration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdminCommand implements Command {
+public class ChangeUsersCommand implements Command {
     private static final String DELETE = "delete";
     private static final String ADMIN = "admin";
     private static final String USER = "user";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession(true).getAttribute("user") == null){
-            return Config.getInstance().getConfig(Config.LOGIN);
-        }
         String page = null;
 
         List<User> users = AdminService.getInstance().getAllUsers();
@@ -40,7 +38,7 @@ public class AdminCommand implements Command {
 
         users = AdminService.getInstance().getAllUsers();
         request.setAttribute("users", users);
-        page = Config.getInstance().getConfig(Config.ADMIN);
+        page = Configuration.getInstance().getConfig(Configuration.ADMIN);
         return page;
     }
 }

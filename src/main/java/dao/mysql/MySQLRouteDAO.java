@@ -3,7 +3,7 @@ package dao.mysql;
 import dao.ConnectionPool;
 import dao.RouteDAO;
 import dao.mysql.util.LogMessageDAOUtil;
-import dao.mysql.util.QueryUtil;
+import dao.mysql.util.QueryDAOUtil;
 import model.entity.Route;
 import java.util.logging.Logger;
 
@@ -19,13 +19,13 @@ class MySQLRouteDAO implements RouteDAO{
     private static final String TABLE_NAME = "route";
 
     private static final String LABEL_ID = "id";
-    private static final String LABEL_PRICE_ID = "price_id";
+    private static final String LABEL_PRICE_ID = "priceId";
 
-    private static final String LABEL_FROM_ID= "from_id";
-    private static final String LABEL_TO_ID= "to_id";
+    private static final String LABEL_FROM_ID= "fromId";
+    private static final String LABEL_TO_ID= "toId";
 
-    private static final String LABEL_FROM_TIME = "from_time";
-    private static final String LABEL_TO_TIME = "to_time";
+    private static final String LABEL_FROM_TIME = "fromTime";
+    private static final String LABEL_TO_TIME = "toTime";
 
     private static final String LABEL_DISTANCE = "distance";
 
@@ -42,7 +42,7 @@ class MySQLRouteDAO implements RouteDAO{
         Statement statement = null;
 
         try{
-            String findAllQuery = QueryUtil.createFindAllQuery(TABLE_NAME);
+            String findAllQuery = QueryDAOUtil.createFindAllQuery(TABLE_NAME);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
@@ -88,7 +88,7 @@ class MySQLRouteDAO implements RouteDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createInsertQuery(
+            String createQuery = QueryDAOUtil.createInsertQuery(
                     TABLE_NAME,
                     LABEL_PRICE_ID,
                     LABEL_FROM_ID,
@@ -102,11 +102,11 @@ class MySQLRouteDAO implements RouteDAO{
 
             statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
 
-            statement.setLong(1, route.getPrice_id());
-            statement.setLong(2, route.getFrom_id());
-            statement.setLong(3, route.getTo_id());
-            statement.setString(4, route.getFrom_time());
-            statement.setString(5, route.getTo_time());
+            statement.setLong(1, route.getPriceId());
+            statement.setLong(2, route.getFromId());
+            statement.setLong(3, route.getToId());
+            statement.setString(4, route.getFromTime());
+            statement.setString(5, route.getToTime());
             statement.setDouble(6, route.getDistance());
 
             statement.executeUpdate();
@@ -132,7 +132,7 @@ class MySQLRouteDAO implements RouteDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createUpdateQuery(TABLE_NAME, LABEL_ID,
+            String createQuery = QueryDAOUtil.createUpdateQuery(TABLE_NAME, LABEL_ID,
                     LABEL_PRICE_ID,
                     LABEL_FROM_ID,
                     LABEL_TO_ID,
@@ -145,11 +145,11 @@ class MySQLRouteDAO implements RouteDAO{
 
             statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
 
-            statement.setLong(1, route.getPrice_id());
-            statement.setLong(2, route.getFrom_id());
-            statement.setLong(3, route.getTo_id());
-            statement.setString(4, route.getFrom_time());
-            statement.setString(5, route.getTo_time());
+            statement.setLong(1, route.getPriceId());
+            statement.setLong(2, route.getFromId());
+            statement.setLong(3, route.getToId());
+            statement.setString(4, route.getFromTime());
+            statement.setString(5, route.getToTime());
             statement.setDouble(6, route.getDistance());
 
             statement.setLong(7, route.getId());
@@ -172,7 +172,7 @@ class MySQLRouteDAO implements RouteDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
+            String createQuery = QueryDAOUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(createQuery);
@@ -193,13 +193,13 @@ class MySQLRouteDAO implements RouteDAO{
         Route result = new Route();
         result.setId(set.getLong(LABEL_ID));
 
-        result.setPrice_id(set.getLong(LABEL_PRICE_ID));
+        result.setPriceId(set.getLong(LABEL_PRICE_ID));
 
-        result.setFrom_id(set.getLong(LABEL_FROM_ID));
-        result.setTo_id(set.getLong(LABEL_TO_ID));
+        result.setFromId(set.getLong(LABEL_FROM_ID));
+        result.setToId(set.getLong(LABEL_TO_ID));
 
-        result.setFrom_time(set.getString(LABEL_FROM_TIME));
-        result.setTo_time(set.getString(LABEL_TO_TIME));
+        result.setFromTime(set.getString(LABEL_FROM_TIME));
+        result.setToTime(set.getString(LABEL_TO_TIME));
 
         result.setDistance(set.getDouble(LABEL_DISTANCE));
 
@@ -212,7 +212,7 @@ class MySQLRouteDAO implements RouteDAO{
         PreparedStatement statement = null;
 
         try{
-            String findByIdQuery = QueryUtil.createFindByParameterQuery(TABLE_NAME, label);
+            String findByIdQuery = QueryDAOUtil.createFindByParameterQuery(TABLE_NAME, label);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(findByIdQuery);

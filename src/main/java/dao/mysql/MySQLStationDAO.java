@@ -3,7 +3,7 @@ package dao.mysql;
 import dao.ConnectionPool;
 import dao.StationDAO;
 import dao.mysql.util.LogMessageDAOUtil;
-import dao.mysql.util.QueryUtil;
+import dao.mysql.util.QueryDAOUtil;
 import model.entity.Station;
 import java.util.logging.Logger;
 
@@ -33,7 +33,7 @@ class MySQLStationDAO implements StationDAO{
         Statement statement = null;
 
         try {
-            String findAllQuery = QueryUtil.createFindAllQuery(TABLE_NAME);
+            String findAllQuery = QueryDAOUtil.createFindAllQuery(TABLE_NAME);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
@@ -61,7 +61,7 @@ class MySQLStationDAO implements StationDAO{
         PreparedStatement statement = null;
 
         try{
-            String findByIdQuery = QueryUtil.createFindByParameterQuery(TABLE_NAME, LABEL_ID);
+            String findByIdQuery = QueryDAOUtil.createFindByParameterQuery(TABLE_NAME, LABEL_ID);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(findByIdQuery);
@@ -87,7 +87,7 @@ class MySQLStationDAO implements StationDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createInsertQuery(
+            String createQuery = QueryDAOUtil.createInsertQuery(
                     TABLE_NAME,
                     LABEL_NAME
             );
@@ -121,7 +121,7 @@ class MySQLStationDAO implements StationDAO{
 
 
         try{
-            String createQuery = QueryUtil.createUpdateQuery(
+            String createQuery = QueryDAOUtil.createUpdateQuery(
                     TABLE_NAME,
                     LABEL_ID,
                     LABEL_NAME
@@ -151,7 +151,7 @@ class MySQLStationDAO implements StationDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
+            String createQuery = QueryDAOUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(createQuery);

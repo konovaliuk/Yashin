@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Train {
     private Long id;
-    private Long route_id;
+    private Long routeId;
 
-    private Long compartment_free;
-    private Long deluxe_free;
-    private Long berth_free;
+    private Long compartmentFree;
+    private Long deluxeFree;
+    private Long berthFree;
 }

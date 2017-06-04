@@ -38,7 +38,11 @@ public class TrainService {
 
         return INSTANCE;
     }
-    public List<Train> getTrainsForRoutes(List<Route> routes){
+
+    public Train findTrainById(Long id){
+        return factory.createTrainDAO().findById(id);
+    }
+    public List<Train> findTrainsForRoutes(List<Route> routes){
         List<Train> result = new ArrayList<>();
 
         for (Route route: routes){
@@ -55,39 +59,41 @@ public class TrainService {
 
         List<Route> routes = RouteService.getInstance().findRouteByStations(from, to);
         routes = RouteService.getInstance().findRoutesFromTime(routes, fromDate);
-        List<Train> trains = TrainService.getInstance().getTrainsForRoutes(routes);
+        List<Train> trains = TrainService.getInstance().findTrainsForRoutes(routes);
 
         List<TrainRoute> trainRoutes = new ArrayList<>();
         for(Train train: trains){
             Route route = RouteService.getInstance().findRouteByTrain(train);
 
             TrainRoute trainRoute = new TrainRoute();
-            trainRoute.setRoute_id(route.getId());
-            trainRoute.setTrain_id(train.getId());
+            trainRoute.setRouteId(route.getId());
+            trainRoute.setTrainId(train.getId());
 
             trainRoute.setFromCity(StationService.getInstance().findFromStation(route).getName());
             trainRoute.setToCity(StationService.getInstance().findToStation(route).getName());
 
-            trainRoute.setFromDate(formatDate(route.getFrom_time()));
-            trainRoute.setToDate(formatDate(route.getTo_time()));
+            trainRoute.setFromDate(formatDate(route.getFromTime()));
+            trainRoute.setToDate(formatDate(route.getToTime()));
 
             trainRoute.setDistance(route.getDistance());
 
-            trainRoute.setBerth_free(train.getBerth_free());
-            trainRoute.setCompartment_free(train.getCompartment_free());
-            trainRoute.setDeluxe_free(train.getDeluxe_free());
+            trainRoute.setBerthFree(train.getBerthFree());
+            trainRoute.setCompartmentFree(train.getCompartmentFree());
+            trainRoute.setDeluxeFree(train.getDeluxeFree());
 
-            trainRoute.setBerth_price(RouteService.getInstance().findBerthPrice(route));
-            trainRoute.setCompartment_price(RouteService.getInstance().findCompartmentPrice(route));
-            trainRoute.setDeluxe_price(RouteService.getInstance().findDeluxePrice(route));
+            trainRoute.setBerthPrice(RouteService.getInstance().findBerthPrice(route));
+            trainRoute.setCompartmentPrice(RouteService.getInstance().findCompartmentPrice(route));
+            trainRoute.setDeluxePrice(RouteService.getInstance().findDeluxePrice(route));
 
-            trainRoutes.add(trainRoute);
+            if((trainRoute.getBerthFree() + trainRoute.getCompartmentFree() + trainRoute.getDeluxeFree()) != 0) {
+                trainRoutes.add(trainRoute);
+            }
         }
 
         return trainRoutes;
     }
 
-    private String formatDate(String date){
+    public String formatDate(String date){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
         Date result = null;
         try {
@@ -114,36 +120,34 @@ public class TrainService {
     }
 
     public Train reserveCompartmentPlace(Train train){
-        return reserveCompartmentPlace(train, 1);
+        train.setCompartmentFree(train.getCompartmentFree() - 1);
+        return factory.createTrainDAO().update(train);
     }
 
 
     public Train reserveBerthPlace(Train train){
-        return reserveBerthPlace(train, 1);
+        train.setBerthFree(train.getBerthFree() - 1);
+        return factory.createTrainDAO().update(train);
     }
 
 
     public Train reserveDeluxePlace(Train train){
-        return reserveDeluxePlace(train, 2);
-    }
-
-    public Train reserveCompartmentPlace(Train train, int count){
-        train.setCompartment_free(train.getCompartment_free() - count);
+        train.setDeluxeFree(train.getDeluxeFree() - 1);
         return factory.createTrainDAO().update(train);
     }
 
-
-    public Train reserveBerthPlace(Train train, int count){
-        train.setCompartment_free(train.getBerth_free() - count);
+    public Train cancelBerthPlace(Train train){
+        train.setBerthFree(train.getBerthFree() + 1);
         return factory.createTrainDAO().update(train);
     }
 
-
-    public Train reserveDeluxePlace(Train train, int count){
-        train.setCompartment_free(train.getDeluxe_free() - count);
+    public Train cancelCompartmentPlace(Train train){
+        train.setCompartmentFree(train.getCompartmentFree() + 1);
         return factory.createTrainDAO().update(train);
     }
-
-
+    public Train cancelDeluxePlace(Train train){
+        train.setDeluxeFree(train.getDeluxeFree() + 1);
+        return factory.createTrainDAO().update(train);
+    }
 
 }

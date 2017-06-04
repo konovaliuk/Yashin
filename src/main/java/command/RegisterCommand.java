@@ -1,9 +1,8 @@
 package command;
 
-import exception.InvalidDataBaseOperation;
 import model.entity.User;
 import service.LoginService;
-import util.Config;
+import util.Configuration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +38,10 @@ public class RegisterCommand implements Command {
                     .build();
 
             user = LoginService.getInstance().addUser(user);
-            page = Config.getInstance().getConfig(Config.LOGIN);
+            page = Configuration.getInstance().getConfig(Configuration.LOGIN);
         } else {
             request.setAttribute("errorMessage", "Email is present. Choose another one");
-            page = Config.getInstance().getConfig(Config.REGISTER);
+            page = Configuration.getInstance().getConfig(Configuration.REGISTER);
         }
 
         return page;

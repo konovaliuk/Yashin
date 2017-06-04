@@ -1,11 +1,10 @@
-package command;
+package command.user;
 
+import command.Command;
 import dto.TrainRoute;
-import model.entity.Route;
-import model.entity.Train;
 import service.RouteService;
 import service.TrainService;
-import util.Config;
+import util.Configuration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,14 +15,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class FromCommand implements Command {
+public class SelectCityDateTimeCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(request.getSession().getAttribute("user") == null){
-            return Config.getInstance().getConfig(Config.LOGIN);
+            return Configuration.getInstance().getConfig(Configuration.LOGIN);
         }
 
-        String page = Config.getInstance().getConfig(Config.DATE);
+        String page = Configuration.getInstance().getConfig(Configuration.DATE);
         Long from_id = Long.parseLong(request.getParameter("from"));
         Long to_id = Long.parseLong(request.getParameter("to"));
         Integer time = Integer.parseInt(request.getParameter("time"));

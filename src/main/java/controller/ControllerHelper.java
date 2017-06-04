@@ -1,6 +1,13 @@
 package controller;
 
 import command.*;
+import command.admin.*;
+import command.localization.SetENCommand;
+import command.localization.SetUKRCommand;
+import command.user.BookTicketsCommand;
+import command.user.MainPageCommand;
+import command.user.SelectCityDateTimeCommand;
+import command.user.MakeTicketsCommand;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -18,11 +25,20 @@ public class ControllerHelper {
         bundle = ResourceBundle.getBundle(BUNDLE_NAME);
         commands.put(bundle.getString("command.entry"), new LoginCommand());
         commands.put(bundle.getString("command.register"), new RegisterCommand());
-        commands.put(bundle.getString("command.inputFrom"), new FromCommand());
-        commands.put(bundle.getString("command.confirm"), new OrderCommand());
-        commands.put(bundle.getString("command.adminConfirm"), new AdminCommand());
+        commands.put(bundle.getString("command.inputFrom"), new SelectCityDateTimeCommand());
+        commands.put(bundle.getString("command.confirm"), new MakeTicketsCommand());
         commands.put(bundle.getString("command.logout"), new LogoutCommand());
         commands.put(bundle.getString("command.ticket"), new BookTicketsCommand());
+        commands.put(bundle.getString("command.en"), new SetENCommand());
+        commands.put(bundle.getString("command.ukr"), new SetUKRCommand());
+
+        commands.put(bundle.getString("command.adminConfirm"), new ChangeUsersCommand());
+        commands.put(bundle.getString("command.tickets"), new TicketCommand());
+        commands.put(bundle.getString("command.users"), new UsersCommand());
+        commands.put(bundle.getString("command.main"), new MainPageCommand());
+
+        commands.put(bundle.getString("command.cancel"), new CancelTicketsCommand());
+        commands.put(bundle.getString("command.cancelAll"), new CancelAllTicketsCommand());
     }
 
     public static ControllerHelper getInstance() {

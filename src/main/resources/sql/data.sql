@@ -1,6 +1,6 @@
-INSERT INTO price(berth_factor, compartment_factor, deluxe_factor) VALUE ('0.2', '0.75', '1');
-INSERT INTO price(berth_factor, compartment_factor, deluxe_factor) VALUE ('0.5', '1', '1.5');
-INSERT INTO price(berth_factor, compartment_factor, deluxe_factor) VALUE ('1', '2', '3');
+INSERT INTO price(berthFactor, compartmentFactor, deluxeFactor) VALUE ('0.2', '0.75', '1');
+INSERT INTO price(berthFactor, compartmentFactor, deluxeFactor) VALUE ('0.5', '1', '1.5');
+INSERT INTO price(berthFactor, compartmentFactor, deluxeFactor) VALUE ('1', '2', '3');
 
 INSERT INTO user(email, password, name, surname, phone, admin) VALUE ("root", "root", "Admin", "Admin", "0", 1);
 INSERT INTO user(email, password, name, surname, phone, admin) VALUE ("andy97@ukr.net", "root", "Andrii", "Yashin", "0663533848", 0);

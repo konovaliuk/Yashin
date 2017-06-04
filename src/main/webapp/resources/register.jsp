@@ -13,7 +13,15 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <link rel="stylesheet"
           type="text/css"
+          href="<c:url value="${pageContext.request.contextPath}/resources/css/bootstrap.css"/>"/>
+    <link rel="stylesheet"
+          type="text/css"
+          href="<c:url value="${pageContext.request.contextPath}/resources/css/bootstrap-theme.css"/>"/>
+    <link rel="stylesheet"
+          type="text/css"
           href="<c:url value="${pageContext.request.contextPath}/resources/css/style.css"/>"/>
+    <script src="<c:url value="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.js"/> "></script>
+    <script src="<c:url value="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"/> "></script>
 </head>
 <body>
 <div class="page">

@@ -41,7 +41,7 @@ public class RouteService {
     }
 
     public Route findRouteByTrain(Train train){
-        return factory.createRouteDAO().findById(train.getRoute_id());
+        return factory.createRouteDAO().findById(train.getRouteId());
     }
 
     public List<Station> findAvailableFromStations(){
@@ -49,7 +49,7 @@ public class RouteService {
         Set<Station> stations = new HashSet<>();
 
         for (Route route: routes){
-            Station station = factory.createStationDAO().findById(route.getFrom_id());
+            Station station = factory.createStationDAO().findById(route.getFromId());
             stations.add(station);
         }
 
@@ -61,7 +61,7 @@ public class RouteService {
         Set<Station> stations = new HashSet<>();
 
         for (Route route: routes){
-            Station station = factory.createStationDAO().findById(route.getTo_id());
+            Station station = factory.createStationDAO().findById(route.getToId());
             stations.add(station);
         }
 
@@ -73,7 +73,7 @@ public class RouteService {
         List<Route> result = new ArrayList<>();
 
         for(Route route: routes){
-            if (route.getTo_id().equals(to.getId())){
+            if (route.getToId().equals(to.getId())){
                 result.add(route);
             }
         }
@@ -88,7 +88,7 @@ public class RouteService {
         List<Route> result = new ArrayList<>();
         try {
             for (Route route : routes) {
-                if (format.parse(route.getFrom_time()).getTime() > time) {
+                if (format.parse(route.getFromTime()).getTime() > time) {
                     result.add(route);
                 }
             }
@@ -112,19 +112,19 @@ public class RouteService {
     }
 
     public Double findCompartmentPrice(Route route){
-        Price compartment = factory.createPriceDAO().findById(route.getPrice_id());
-        return compartment.getCompartment_factor() * route.getDistance();
+        Price compartment = factory.createPriceDAO().findById(route.getPriceId());
+        return compartment.getCompartmentFactor() * route.getDistance();
     }
 
 
     public Double findBerthPrice(Route route){
-        Price compartment = factory.createPriceDAO().findById(route.getPrice_id());
-        return compartment.getBerth_factor() * route.getDistance();
+        Price compartment = factory.createPriceDAO().findById(route.getPriceId());
+        return compartment.getBerthFactor() * route.getDistance();
     }
 
 
     public Double findDeluxePrice(Route route){
-        Price compartment = factory.createPriceDAO().findById(route.getPrice_id());
-        return compartment.getDeluxe_factor() * route.getDistance();
+        Price compartment = factory.createPriceDAO().findById(route.getPriceId());
+        return compartment.getDeluxeFactor() * route.getDistance();
     }
 }

@@ -1,6 +1,6 @@
 package command;
 
-import util.Config;
+import util.Configuration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +10,6 @@ import java.io.IOException;
 public class MissingCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        return Config.getInstance().getConfig(Config.LOGIN);
+        return Configuration.getInstance().getConfig(Configuration.LOGIN);
     }
 }

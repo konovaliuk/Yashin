@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Route {
     private Long id;
-    private Long price_id;
+    private Long priceId;
 
-    private Long from_id;
-    private Long to_id;
+    private Long fromId;
+    private Long toId;
 
-    private String from_time;
-    private String to_time;
+    private String fromTime;
+    private String toTime;
 
     private Double distance;
 

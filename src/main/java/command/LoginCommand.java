@@ -4,16 +4,14 @@ import model.entity.User;
 import service.AdminService;
 import service.LoginService;
 import service.RouteService;
-import util.Config;
+import util.Configuration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class LoginCommand implements Command {
@@ -29,7 +27,7 @@ public class LoginCommand implements Command {
         User user = LoginService.getInstance().isPresentLogin(email);
 
         if(user == null){
-            page = redirectToRegister(request);
+            page = redirectToErrorPage(request);
         } else {
             if (user.getPassword().equals(password)) {
                 if(user.isAdmin()){
@@ -46,19 +44,19 @@ public class LoginCommand implements Command {
     }
 
     private String redirectToRegister(HttpServletRequest request){
-        return Config.getInstance().getConfig(Config.REGISTER);
+        return Configuration.getInstance().getConfig(Configuration.REGISTER);
     }
 
     private String redirectToAdminPage(HttpServletRequest request, User user){
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(false);
         session.setAttribute("user", user);
 
         request.setAttribute("users", AdminService.getInstance().getAllUsers());
-        return Config.getInstance().getConfig(Config.ADMIN);
+        return Configuration.getInstance().getConfig(Configuration.ADMIN);
     }
 
     private String redirectToUserPage(HttpServletRequest request, User user){
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(false);
         session.setAttribute("user", user);
         session.setMaxInactiveInterval(30*60);
 
@@ -68,11 +66,11 @@ public class LoginCommand implements Command {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         request.setAttribute("d", format.format(new Date()));
-        return Config.getInstance().getConfig(Config.DATE);
+        return Configuration.getInstance().getConfig(Configuration.DATE);
     }
 
     private String redirectToErrorPage(HttpServletRequest request){
         request.setAttribute("errorMessage", "Invalid email or password");
-        return Config.getInstance().getConfig(Config.LOGIN);
+        return Configuration.getInstance().getConfig(Configuration.LOGIN);
     }
 }

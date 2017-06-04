@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ticket {
-    private Long request_id;
-    private Long train_id;
-    private Long user_id;
+    private Long requestId;
+    private Long trainId;
+    private Long userId;
 
     private String name;
     private String surname;

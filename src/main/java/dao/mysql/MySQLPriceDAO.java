@@ -3,7 +3,7 @@ package dao.mysql;
 import dao.ConnectionPool;
 import dao.PriceDAO;
 import dao.mysql.util.LogMessageDAOUtil;
-import dao.mysql.util.QueryUtil;
+import dao.mysql.util.QueryDAOUtil;
 import model.entity.Price;
 import java.util.logging.Logger;
 
@@ -17,9 +17,9 @@ class MySQLPriceDAO implements PriceDAO{
     private static final String TABLE_NAME = "price";
 
     private static final String LABEL_ID = "id";
-    private static final String LABEL_BERTH_FACTOR = "berth_factor";
-    private static final String LABEL_COMPARTMENT_FACTOR = "compartment_factor";
-    private static final String LABEL_DELUXE_FACTOR = "deluxe_factor";
+    private static final String LABEL_BERTH_FACTOR = "berthFactor";
+    private static final String LABEL_COMPARTMENT_FACTOR = "compartmentFactor";
+    private static final String LABEL_DELUXE_FACTOR = "deluxeFactor";
 
     private MySQLPriceDAO(){}
 
@@ -34,7 +34,7 @@ class MySQLPriceDAO implements PriceDAO{
         Statement statement = null;
 
         try{
-            String findAllQuery = QueryUtil.createFindAllQuery(TABLE_NAME);
+            String findAllQuery = QueryDAOUtil.createFindAllQuery(TABLE_NAME);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
@@ -59,7 +59,7 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
-            String findByIdQuery = QueryUtil.createFindByParameterQuery(TABLE_NAME, LABEL_ID);
+            String findByIdQuery = QueryDAOUtil.createFindByParameterQuery(TABLE_NAME, LABEL_ID);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(findByIdQuery);
@@ -84,7 +84,7 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createInsertQuery(
+            String createQuery = QueryDAOUtil.createInsertQuery(
                     TABLE_NAME,
                     LABEL_BERTH_FACTOR,
                     LABEL_COMPARTMENT_FACTOR,
@@ -93,9 +93,9 @@ class MySQLPriceDAO implements PriceDAO{
             connection = ConnectionPool.getInstance().getConnection();
 
             statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setDouble(1, price.getBerth_factor());
-            statement.setDouble(2, price.getCompartment_factor());
-            statement.setDouble(3, price.getDeluxe_factor());
+            statement.setDouble(1, price.getBerthFactor());
+            statement.setDouble(2, price.getCompartmentFactor());
+            statement.setDouble(3, price.getDeluxeFactor());
             statement.executeUpdate();
 
             ResultSet set = statement.getGeneratedKeys();
@@ -119,7 +119,7 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
-            String updateQuery = QueryUtil.createUpdateQuery(TABLE_NAME, LABEL_ID,
+            String updateQuery = QueryDAOUtil.createUpdateQuery(TABLE_NAME, LABEL_ID,
                     LABEL_BERTH_FACTOR,
                     LABEL_COMPARTMENT_FACTOR,
                     LABEL_DELUXE_FACTOR);
@@ -127,9 +127,9 @@ class MySQLPriceDAO implements PriceDAO{
             connection = ConnectionPool.getInstance().getConnection();
 
             statement = connection.prepareStatement(updateQuery);
-            statement.setDouble(1, price.getBerth_factor());
-            statement.setDouble(2, price.getCompartment_factor());
-            statement.setDouble(3, price.getDeluxe_factor());
+            statement.setDouble(1, price.getBerthFactor());
+            statement.setDouble(2, price.getCompartmentFactor());
+            statement.setDouble(3, price.getDeluxeFactor());
             statement.setLong(4, price.getId());
 
             statement.executeUpdate();
@@ -150,7 +150,7 @@ class MySQLPriceDAO implements PriceDAO{
         PreparedStatement statement = null;
 
         try{
-            String deleteQuery = QueryUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
+            String deleteQuery = QueryDAOUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(deleteQuery);
@@ -178,9 +178,9 @@ class MySQLPriceDAO implements PriceDAO{
     private Price getPrice(ResultSet set) throws SQLException{
         Price result = new Price();
         result.setId(set.getLong(LABEL_ID));
-        result.setBerth_factor(set.getDouble(LABEL_BERTH_FACTOR));
-        result.setCompartment_factor(set.getDouble(LABEL_BERTH_FACTOR));
-        result.setDeluxe_factor(set.getDouble(LABEL_DELUXE_FACTOR));
+        result.setBerthFactor(set.getDouble(LABEL_BERTH_FACTOR));
+        result.setCompartmentFactor(set.getDouble(LABEL_BERTH_FACTOR));
+        result.setDeluxeFactor(set.getDouble(LABEL_DELUXE_FACTOR));
 
         return result;
     }

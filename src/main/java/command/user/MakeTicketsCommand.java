@@ -1,12 +1,13 @@
-package command;
+package command.user;
 
+import command.Command;
 import dto.Ticket;
 import dto.TrainRoute;
 import model.entity.Route;
 import model.entity.User;
 import service.RouteService;
 import service.TrainService;
-import util.Config;
+import util.Configuration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,14 +19,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class OrderCommand implements Command {
+public class MakeTicketsCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("user") == null) {
-            return Config.getInstance().getConfig(Config.LOGIN);
+            return Configuration.getInstance().getConfig(Configuration.LOGIN);
         }
 
-        String page = Config.getInstance().getConfig(Config.ORDER);
+        String page = Configuration.getInstance().getConfig(Configuration.ORDER);
         Long from_id = Long.parseLong(request.getParameter("from"));
         Long to_id = Long.parseLong(request.getParameter("to"));
         Integer time = Integer.parseInt(request.getParameter("time"));
@@ -43,10 +44,10 @@ public class OrderCommand implements Command {
         List<TrainRoute> trains = TrainService.getInstance().findTrainsAndRoutes(from_id, to_id, date);
         List<Ticket> tickets = new ArrayList<>();
         for (TrainRoute trainRoute : trains) {
-            String parameter = request.getParameter("train" + trainRoute.getTrain_id());
+            String parameter = request.getParameter("train" + trainRoute.getTrainId());
             if (!parameter.equals("none")) {
                 Ticket ticket = new Ticket();
-                ticket.setTrain_id(trainRoute.getTrain_id());
+                ticket.setTrainId(trainRoute.getTrainId());
 
                 ticket.setFromCity(trainRoute.getFromCity());
                 ticket.setToCity(trainRoute.getToCity());
@@ -60,20 +61,20 @@ public class OrderCommand implements Command {
 
                 Double price;
                 Long max;
-                Route route = RouteService.getInstance().findRouteById(trainRoute.getRoute_id());
+                Route route = RouteService.getInstance().findRouteById(trainRoute.getRouteId());
                 switch (parameter){
                     case "C": {
-                        max = trainRoute.getCompartment_free();
+                        max = trainRoute.getCompartmentFree();
                         price = RouteService.getInstance().findCompartmentPrice(route);
                         break;
                     }
                     case "L": {
-                        max = trainRoute.getDeluxe_free();
+                        max = trainRoute.getDeluxeFree();
                         price = RouteService.getInstance().findDeluxePrice(route);
                         break;
                     }
                     default: {
-                        max = trainRoute.getBerth_free();
+                        max = trainRoute.getBerthFree();
                         price = RouteService.getInstance().findBerthPrice(route);
                         break;
                     }
@@ -81,7 +82,7 @@ public class OrderCommand implements Command {
                 ticket.setMax(max);
                 ticket.setTypePlace(parameter);
                 ticket.setPrice(price);
-                ticket.setUser_id(user.getId());
+                ticket.setUserId(user.getId());
                 tickets.add(ticket);
             }
 

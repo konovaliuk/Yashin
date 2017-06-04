@@ -8,8 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 public class Request {
     private Long id;
-    private Long user_id;
-    private Long train_id;
+    private Long userId;
+    private Long trainId;
 
     private TypePlace type;
 
@@ -24,12 +24,12 @@ public class Request {
         }
 
         public RequestBuilder setUserId(Long id){
-            request.setUser_id(id);
+            request.setUserId(id);
             return this;
         }
 
         public RequestBuilder setTrainId(Long id){
-            request.setTrain_id(id);
+            request.setTrainId(id);
             return this;
         }
 

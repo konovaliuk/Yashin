@@ -3,7 +3,7 @@ package dao.mysql;
 import dao.ConnectionPool;
 import dao.UserDAO;
 import dao.mysql.util.LogMessageDAOUtil;
-import dao.mysql.util.QueryUtil;
+import dao.mysql.util.QueryDAOUtil;
 import model.entity.User;
 import java.util.logging.Logger;
 
@@ -39,7 +39,7 @@ class MySQLUserDAO implements UserDAO{
         Statement statement = null;
 
         try {
-            String findAllQuery = QueryUtil.createFindAllQuery(TABLE_NAME);
+            String findAllQuery = QueryDAOUtil.createFindAllQuery(TABLE_NAME);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
@@ -84,7 +84,7 @@ class MySQLUserDAO implements UserDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createInsertQuery(
+            String createQuery = QueryDAOUtil.createInsertQuery(
                     TABLE_NAME,
                     LABEL_EMAIL,
                     LABEL_PASSWORD,
@@ -128,7 +128,7 @@ class MySQLUserDAO implements UserDAO{
 
 
         try{
-            String createQuery = QueryUtil.createUpdateQuery(
+            String createQuery = QueryDAOUtil.createUpdateQuery(
                     TABLE_NAME,
                     LABEL_ID,
                     LABEL_EMAIL,
@@ -174,7 +174,7 @@ class MySQLUserDAO implements UserDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
+            String createQuery = QueryDAOUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(createQuery);
@@ -219,7 +219,7 @@ class MySQLUserDAO implements UserDAO{
         PreparedStatement statement = null;
 
         try{
-            String findByIdQuery = QueryUtil.createFindByParameterQuery(TABLE_NAME, label);
+            String findByIdQuery = QueryDAOUtil.createFindByParameterQuery(TABLE_NAME, label);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(findByIdQuery);

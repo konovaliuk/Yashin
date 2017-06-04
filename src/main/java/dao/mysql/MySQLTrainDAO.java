@@ -3,7 +3,7 @@ package dao.mysql;
 import dao.ConnectionPool;
 import dao.TrainDAO;
 import dao.mysql.util.LogMessageDAOUtil;
-import dao.mysql.util.QueryUtil;
+import dao.mysql.util.QueryDAOUtil;
 import model.entity.Train;
 import java.util.logging.Logger;
 
@@ -18,10 +18,10 @@ class MySQLTrainDAO implements TrainDAO{
     private static final String TABLE_NAME = "train";
 
     private static final String LABEL_ID = "id";
-    private static final String LABEL_ROUTE_ID = "route_id";
-    private static final String LABEL_COMPARTMENT_FREE = "compartment_free";
-    private static final String LABEL_BERTH_FREE = "berth_free";
-    private static final String LABEL_DELUXE_FREE = "deluxe_free";
+    private static final String LABEL_ROUTE_ID = "routeId";
+    private static final String LABEL_COMPARTMENT_FREE = "compartmentFree";
+    private static final String LABEL_BERTH_FREE = "berthFree";
+    private static final String LABEL_DELUXE_FREE = "deluxeFree";
 
     private MySQLTrainDAO(){}
 
@@ -36,7 +36,7 @@ class MySQLTrainDAO implements TrainDAO{
         Statement statement = null;
 
         try {
-            String findAllQuery = QueryUtil.createFindAllQuery(TABLE_NAME);
+            String findAllQuery = QueryDAOUtil.createFindAllQuery(TABLE_NAME);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
@@ -77,7 +77,7 @@ class MySQLTrainDAO implements TrainDAO{
         PreparedStatement statement = null;
 
         try{
-            String createQuery = QueryUtil.createInsertQuery(
+            String createQuery = QueryDAOUtil.createInsertQuery(
                     TABLE_NAME,
                     LABEL_ROUTE_ID,
                     LABEL_BERTH_FREE,
@@ -88,10 +88,10 @@ class MySQLTrainDAO implements TrainDAO{
             connection = ConnectionPool.getInstance().getConnection();
 
             statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, train.getRoute_id());
-            statement.setLong(2, train.getBerth_free());
-            statement.setLong(3, train.getCompartment_free());
-            statement.setLong(4, train.getDeluxe_free());
+            statement.setLong(1, train.getRouteId());
+            statement.setLong(2, train.getBerthFree());
+            statement.setLong(3, train.getCompartmentFree());
+            statement.setLong(4, train.getDeluxeFree());
 
             statement.executeUpdate();
 
@@ -117,7 +117,7 @@ class MySQLTrainDAO implements TrainDAO{
 
 
         try{
-            String createQuery = QueryUtil.createUpdateQuery(
+            String createQuery = QueryDAOUtil.createUpdateQuery(
                     TABLE_NAME,
                     LABEL_ID,
                     LABEL_ROUTE_ID,
@@ -129,18 +129,18 @@ class MySQLTrainDAO implements TrainDAO{
             connection = ConnectionPool.getInstance().getConnection();
 
             statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, train.getRoute_id());
-            statement.setLong(2, train.getBerth_free());
-            statement.setLong(3, train.getCompartment_free());
-            statement.setLong(4, train.getDeluxe_free());
+            statement.setLong(1, train.getRouteId());
+            statement.setLong(2, train.getBerthFree());
+            statement.setLong(3, train.getCompartmentFree());
+            statement.setLong(4, train.getDeluxeFree());
 
             statement.setLong(5, train.getId());
 
             statement.executeUpdate();
 
-            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, train.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, train.getId()));
         } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorUpdate(TABLE_NAME, train.getId()));
         } finally {
             close(connection, statement);
         }
@@ -159,7 +159,7 @@ class MySQLTrainDAO implements TrainDAO{
         PreparedStatement statement = null;
 
         try{
-            String findByIdQuery = QueryUtil.createFindByParameterQuery(TABLE_NAME, label);
+            String findByIdQuery = QueryDAOUtil.createFindByParameterQuery(TABLE_NAME, label);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(findByIdQuery);
@@ -183,10 +183,10 @@ class MySQLTrainDAO implements TrainDAO{
         Train result = new Train();
 
         result.setId(set.getLong(LABEL_ID));
-        result.setRoute_id(set.getLong(LABEL_ROUTE_ID));
-        result.setBerth_free(set.getLong(LABEL_BERTH_FREE));
-        result.setCompartment_free(set.getLong(LABEL_COMPARTMENT_FREE));
-        result.setDeluxe_free(set.getLong(LABEL_DELUXE_FREE));
+        result.setRouteId(set.getLong(LABEL_ROUTE_ID));
+        result.setBerthFree(set.getLong(LABEL_BERTH_FREE));
+        result.setCompartmentFree(set.getLong(LABEL_COMPARTMENT_FREE));
+        result.setDeluxeFree(set.getLong(LABEL_DELUXE_FREE));
 
         return result;
     }
