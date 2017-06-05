@@ -53,7 +53,14 @@ public class RouteService {
             stations.add(station);
         }
 
-        return new ArrayList<>(stations);
+        List<Station> result = new ArrayList<>(stations);
+        result.sort(new Comparator<Station>() {
+            @Override
+            public int compare(Station o1, Station o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        return result;
     }
 
     public List<Station> findAvailableToStations(){
@@ -65,7 +72,14 @@ public class RouteService {
             stations.add(station);
         }
 
-        return new ArrayList<>(stations);
+        List<Station> result = new ArrayList<>(stations);
+        result.sort(new Comparator<Station>() {
+            @Override
+            public int compare(Station o1, Station o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        return result;
     }
 
     public List<Route> findRouteByStations(Station from, Station to){

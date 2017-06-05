@@ -19,12 +19,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static command.user.CommandUserAdmin.USERNAME_ATTRIBUTE;
+import static command.user.CommandUserAdmin.USER_ATTRIBUTE;
+
 public class MakeTicketsCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
+        User userNow = (User) request.getSession(false).getAttribute(USER_ATTRIBUTE);
+        if(userNow == null)
             return Configuration.getInstance().getConfig(Configuration.LOGIN);
-        }
 
         String page = Configuration.getInstance().getConfig(Configuration.ORDER);
         Long from_id = Long.parseLong(request.getParameter("from"));
@@ -94,6 +97,7 @@ public class MakeTicketsCommand implements Command {
             request.setAttribute("tickets", tickets);
             request.getSession(false).setAttribute("tickets", tickets);
         }
+        request.setAttribute(USERNAME_ATTRIBUTE, userNow.getName());
         return page;
     }
 }

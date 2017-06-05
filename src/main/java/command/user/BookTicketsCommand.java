@@ -3,6 +3,7 @@ package command.user;
 import command.Command;
 import dto.Ticket;
 import exception.InvalidDataBaseOperation;
+import model.entity.User;
 import service.RequestService;
 import service.RouteService;
 import util.Configuration;
@@ -14,13 +15,17 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static command.user.CommandUserAdmin.USERNAME_ATTRIBUTE;
+import static command.user.CommandUserAdmin.USER_ATTRIBUTE;
+
 public class BookTicketsCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
+        User userNow = (User) request.getSession(false).getAttribute(USER_ATTRIBUTE);
+        if(userNow == null)
             return Configuration.getInstance().getConfig(Configuration.LOGIN);
-        }
+
         String page = Configuration.getInstance().getConfig(Configuration.TICKET);
 
         List<Ticket> tickets = (List<Ticket>) request.getSession(false).getAttribute("tickets");
@@ -49,6 +54,7 @@ public class BookTicketsCommand implements Command {
             }
 
         }
+        request.setAttribute(USERNAME_ATTRIBUTE, userNow.getName());
         return page;
     }
 

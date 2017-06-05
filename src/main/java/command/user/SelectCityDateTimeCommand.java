@@ -2,6 +2,7 @@ package command.user;
 
 import command.Command;
 import dto.TrainRoute;
+import model.entity.User;
 import service.RouteService;
 import service.TrainService;
 import util.Configuration;
@@ -15,12 +16,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static command.user.CommandUserAdmin.USERNAME_ATTRIBUTE;
+import static command.user.CommandUserAdmin.USER_ATTRIBUTE;
+
 public class SelectCityDateTimeCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession().getAttribute("user") == null){
+        User userNow = (User) request.getSession(false).getAttribute(USER_ATTRIBUTE);
+        if(userNow == null)
             return Configuration.getInstance().getConfig(Configuration.LOGIN);
-        }
 
         String page = Configuration.getInstance().getConfig(Configuration.DATE);
         Long from_id = Long.parseLong(request.getParameter("from"));
@@ -48,8 +52,10 @@ public class SelectCityDateTimeCommand implements Command {
         if(trains.isEmpty()){
             request.setAttribute("noTrain", true);
         }
-        request.setAttribute("d", format.format(date));
+        request.setAttribute("dateNow", format.format(date));
         request.setAttribute("time", time);
+
+        request.setAttribute(USERNAME_ATTRIBUTE, userNow.getName());
         return page;
     }
 }

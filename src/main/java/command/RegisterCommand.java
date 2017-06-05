@@ -40,7 +40,7 @@ public class RegisterCommand implements Command {
             user = LoginService.getInstance().addUser(user);
             page = Configuration.getInstance().getConfig(Configuration.LOGIN);
         } else {
-            request.setAttribute("errorMessage", "Email is present. Choose another one");
+            request.setAttribute("errorMessage", true);
             page = Configuration.getInstance().getConfig(Configuration.REGISTER);
         }
 

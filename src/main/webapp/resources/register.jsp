@@ -1,50 +1,70 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: andrew_yashin
-  Date: 5/29/17
-  Time: 02:57
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Register</title>
+    <title>Railway System</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="${pageContext.request.contextPath}/resources/css/bootstrap.css"/>"/>
+          href="<c:url value="./css/bootstrap.css"/>"/>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="${pageContext.request.contextPath}/resources/css/bootstrap-theme.css"/>"/>
+          href="<c:url value="./css/bootstrap-theme.css"/>"/>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="${pageContext.request.contextPath}/resources/css/style.css"/>"/>
-    <script src="<c:url value="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.js"/> "></script>
-    <script src="<c:url value="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"/> "></script>
+          href="<c:url value="./css/style.css"/>"/>
+    <script src="<c:url value="./js/jquery-3.2.1.js"/>"></script>
+    <script src="<c:url value="./js/bootstrap.min.js"/>"></script>
+    <fmt:setBundle basename="login" var="login"/>
+    <fmt:setBundle basename="message" var="message"/>
 </head>
 <body>
-<div class="page">
-    <div class="form">
-        <form class="login-form" method="post" action="/login">
-            <input type="email" placeholder="email" name="email" required/>
-            </br>
-            <input type="password" placeholder="password" minlength="8" name="password" required/>
-            </br>
-            <input type="text" placeholder="name" name="name" required/>
-            </br>
-            <input type="text" placeholder="surname" name="surname" required/>
-            </br>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">Railway System</a>
+        </div>
+    </div>
+</nav>
+<div class="row">
+    <div class="col-md-5"></div>
+    <div class="col-md-2" style="text-align: center;">
+        <form style="padding-top: 100%; text-align: center" method="post" action="/login" class="center-block">
+            <input type="email" placeholder="<fmt:message key="login.emailRegister" bundle="${login}"/>" name="email"
+                   required
+                   class="form-control"
+                   style="width: 100%; margin-bottom: 10px"
+            />
+            <input type="password" placeholder="<fmt:message key="login.passwordRegister" bundle="${login}"/>"
+                   minlength="8" name="password" required
+                   class="form-control"
+                   style="width: 100%; margin-bottom: 10px"
+            />
+            <input type="text" placeholder="<fmt:message key="login.name" bundle="${login}"/>" name="name"
+                   required
+                   class="form-control"
+                   style="width: 100%; margin-bottom: 10px"
+            />
+            <input type="text" placeholder="<fmt:message key="login.surname" bundle="${login}"/>" name="surname"
+                   required
+                   class="form-control"
+                   style="width: 100%; margin-bottom: 10px"
+            />
             <%--pattern="\([0-9]{3}\)\s[0-9]{3}-[0-9]{2}-[0-9]{2}"--%>
-            <input type="tel" name="phone" placeholder="(050) 121-34-57" required/>
-            </br>
+            <input type="tel" name="phone" placeholder="<fmt:message key="login.tel" bundle="${login}"/>"
+                   required
+                   class="form-control"
+                   style="width: 100%; margin-bottom: 10px"
+            />
             <c:if test="${requestScope.errorMessage != null}">
-                <c:out value="${requestScope.errorMessage}"/>
+                <h4><fmt:message key="message.containsEmail" bundle="${message}"/></h4>
             </c:if>
-            </br>
-            <input class="form" type="submit" value="Sign up" name="command"/>
+            <button class="btn btn-primary" type="submit" value="register" name="command"><fmt:message key="login.signUp"
+                                                                                            bundle="${login}"/></button>
         </form>
     </div>
+    <div class="col-md-5"></div>
 </div>
 </body>
 </html>

@@ -55,7 +55,7 @@ public class RequestService {
                 break;
             }
             case C:{
-                if (train.getBerthFree() == 0){
+                if (train.getCompartmentFree() == 0){
                     throw new InvalidDataBaseOperation("Someone booked all tickets to this train." +
                             " Please, go to the main page and select other train");
                 }
@@ -63,7 +63,7 @@ public class RequestService {
                 break;
             }
             case L:{
-                if (train.getBerthFree() == 0){
+                if (train.getDeluxeFree() == 0){
                     throw new InvalidDataBaseOperation("Someone booked all tickets to this train." +
                             " Please, go to the main page and select other train");
                 }

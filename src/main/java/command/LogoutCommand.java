@@ -14,7 +14,7 @@ public class LogoutCommand implements Command {
         String page = Configuration.getInstance().getConfig(Configuration.LOGIN);
         HttpSession session = request.getSession(false);
         if(session.getAttribute("user") != null){
-            session.invalidate();
+            session.setAttribute("user", null);
         }
         return page;
     }

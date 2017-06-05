@@ -40,6 +40,7 @@ public class LoginCommand implements Command {
             }
         }
 
+
         return page;
     }
 
@@ -52,6 +53,7 @@ public class LoginCommand implements Command {
         session.setAttribute("user", user);
 
         request.setAttribute("users", AdminService.getInstance().getAllUsers());
+        request.setAttribute("username", user.getName());
         return Configuration.getInstance().getConfig(Configuration.ADMIN);
     }
 
@@ -65,12 +67,14 @@ public class LoginCommand implements Command {
         request.setAttribute("trains", null);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        request.setAttribute("d", format.format(new Date()));
+        request.setAttribute("dateNow", format.format(new Date()));
+
+        request.setAttribute("username", user.getName());
         return Configuration.getInstance().getConfig(Configuration.DATE);
     }
 
     private String redirectToErrorPage(HttpServletRequest request){
-        request.setAttribute("errorMessage", "Invalid email or password");
+        request.setAttribute("errorMessage", true);
         return Configuration.getInstance().getConfig(Configuration.LOGIN);
     }
 }

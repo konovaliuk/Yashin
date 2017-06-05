@@ -11,34 +11,38 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class ChangeUsersCommand implements Command {
-    private static final String DELETE = "delete";
-    private static final String ADMIN = "admin";
-    private static final String USER = "user";
+import static command.admin.CommandAdminUtil.*;
 
+
+public class ChangeUsersCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page = null;
+        User userNow = (User) request.getSession(false).getAttribute(USER_ATTRIBUTE);
+        if (userNow == null || !userNow.isAdmin())
+            return Configuration.getInstance().getConfig(Configuration.LOGIN);
 
         List<User> users = AdminService.getInstance().getAllUsers();
-        for(User user: users){
-            String action = request.getParameter(user.getId().toString());
-            if(action.equals(DELETE)){
-                AdminService.getInstance().deleteUser(user);
-            }
-            if (action.equals(ADMIN)){
-                user.makeAdmin();
-                AdminService.getInstance().updateUser(user);
-            }
-            if (action.equals(USER)){
-                user.makeUser();
-                AdminService.getInstance().updateUser(user);
+        for (User user : users) {
+            switch (request.getParameter(user.getId().toString())) {
+                case DELETE:
+                    AdminService.getInstance().deleteUser(user);
+                    break;
+                case ADMIN:
+                    user.makeAdmin();
+                    AdminService.getInstance().updateUser(user);
+                    break;
+                case USER:
+                    user.makeUser();
+                    AdminService.getInstance().updateUser(user);
+                    break;
+                default:
+                    break;
+
             }
         }
 
-        users = AdminService.getInstance().getAllUsers();
-        request.setAttribute("users", users);
-        page = Configuration.getInstance().getConfig(Configuration.ADMIN);
-        return page;
+        request.setAttribute(USERNAME_ATTRIBUTE, userNow.getName());
+        request.setAttribute(USERS_ATTRIBUTE, AdminService.getInstance().getAllUsers());
+        return Configuration.getInstance().getConfig(Configuration.ADMIN);
     }
 }

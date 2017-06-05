@@ -10,6 +10,7 @@ import command.user.SelectCityDateTimeCommand;
 import command.user.MakeTicketsCommand;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.jstl.core.Config;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -23,16 +24,16 @@ public class ControllerHelper {
 
     private ControllerHelper() {
         bundle = ResourceBundle.getBundle(BUNDLE_NAME);
-        commands.put(bundle.getString("command.entry"), new LoginCommand());
+        commands.put(bundle.getString("command.login"), new LoginCommand());
         commands.put(bundle.getString("command.register"), new RegisterCommand());
-        commands.put(bundle.getString("command.inputFrom"), new SelectCityDateTimeCommand());
-        commands.put(bundle.getString("command.confirm"), new MakeTicketsCommand());
+        commands.put(bundle.getString("command.selectDateTime"), new SelectCityDateTimeCommand());
+        commands.put(bundle.getString("command.make"), new MakeTicketsCommand());
         commands.put(bundle.getString("command.logout"), new LogoutCommand());
-        commands.put(bundle.getString("command.ticket"), new BookTicketsCommand());
+        commands.put(bundle.getString("command.book"), new BookTicketsCommand());
         commands.put(bundle.getString("command.en"), new SetENCommand());
         commands.put(bundle.getString("command.ukr"), new SetUKRCommand());
 
-        commands.put(bundle.getString("command.adminConfirm"), new ChangeUsersCommand());
+        commands.put(bundle.getString("command.adminUser"), new ChangeUsersCommand());
         commands.put(bundle.getString("command.tickets"), new TicketCommand());
         commands.put(bundle.getString("command.users"), new UsersCommand());
         commands.put(bundle.getString("command.main"), new MainPageCommand());
