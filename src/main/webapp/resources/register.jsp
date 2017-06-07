@@ -5,17 +5,18 @@
 <head>
     <title>Railway System</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./css/bootstrap.css"/>"/>
+          href="<c:url value="/resources/css/bootstrap.css"/>"/>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./css/bootstrap-theme.css"/>"/>
+          href="<c:url value="/resources/css/bootstrap-theme.css"/>"/>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./css/style.css"/>"/>
-    <script src="<c:url value="./js/jquery-3.2.1.js"/>"></script>
-    <script src="<c:url value="./js/bootstrap.min.js"/>"></script>
+          href="<c:url value="/resources/css/style.css"/>"/>
+    <script src="<c:url value="/resources/js/jquery-3.2.1.js"/>"></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <fmt:setBundle basename="login" var="login"/>
     <fmt:setBundle basename="message" var="message"/>
 </head>
@@ -30,7 +31,7 @@
 <div class="row">
     <div class="col-md-5"></div>
     <div class="col-md-2" style="text-align: center;">
-        <form style="padding-top: 100%; text-align: center" method="post" action="/login" class="center-block">
+        <form style="padding-top: 100%; text-align: center" method="post" action="RailwaySystem/login" class="center-block">
             <input type="email" placeholder="<fmt:message key="login.emailRegister" bundle="${login}"/>" name="email"
                    required
                    class="form-control"

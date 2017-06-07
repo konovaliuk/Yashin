@@ -4,6 +4,7 @@ import dao.AbstractDAOFactory;
 import dao.DAOFactory;
 import dao.DataBase;
 import model.entity.User;
+import org.apache.commons.codec.digest.DigestUtils;
 import service.util.LogMessageServiceUtil;
 import java.util.logging.Logger;
 
@@ -42,6 +43,7 @@ public class LoginService {
     }
 
     public User addUser(User user){
+        user = securePassword(user);
         User createdUser = factory.createUserDAO().create(user);
         if (createdUser == null){
             LOG.severe(LogMessageServiceUtil.createMethodError(USER_DAO, ADD_USER));
@@ -50,5 +52,16 @@ public class LoginService {
 
         LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, ADD_USER));
         return createdUser;
+    }
+
+    public boolean checkPassword(User user, String password){
+        String securePassword = DigestUtils.md5Hex(password);
+        return securePassword.equals(user.getPassword());
+    }
+
+    public User securePassword(final User user){
+        String securePassword = DigestUtils.md5Hex(user.getPassword());
+        user.setPassword(securePassword);
+        return user;
     }
 }

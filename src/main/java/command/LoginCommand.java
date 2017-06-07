@@ -1,6 +1,7 @@
 package command;
 
 import model.entity.User;
+import org.apache.commons.codec.digest.DigestUtils;
 import service.AdminService;
 import service.LoginService;
 import service.RouteService;
@@ -29,7 +30,7 @@ public class LoginCommand implements Command {
         if(user == null){
             page = redirectToErrorPage(request);
         } else {
-            if (user.getPassword().equals(password)) {
+            if (LoginService.getInstance().checkPassword(user, password)) {
                 if(user.isAdmin()){
                     page = redirectToAdminPage(request, user);
                 } else {
@@ -42,10 +43,6 @@ public class LoginCommand implements Command {
 
 
         return page;
-    }
-
-    private String redirectToRegister(HttpServletRequest request){
-        return Configuration.getInstance().getConfig(Configuration.REGISTER);
     }
 
     private String redirectToAdminPage(HttpServletRequest request, User user){

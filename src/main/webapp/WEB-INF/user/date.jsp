@@ -1,20 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="hello" uri="/WEB-INF/lib/hello.tld" %>
 <html>
 <head>
     <title>Railway System</title>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./resources/css/bootstrap.css"/>"/>
+          href="<c:url value="/resources/css/bootstrap.css"/>"/>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./resources/css/bootstrap-theme.css"/>"/>
+          href="<c:url value="/resources/css/bootstrap-theme.css"/>"/>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./resources/css/style.css"/>"/>
-    <script src="<c:url value="./resources/js/jquery-3.2.1.js"/> "></script>
-    <script src="<c:url value="./resources/js/bootstrap.min.js"/> "></script>
+          href="<c:url value="/resources/css/style.css"/>"/>
+    <script src="<c:url value="/resources/js/jquery-3.2.1.js"/>"></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
     <fmt:setBundle basename="date" var="date"/>
     <fmt:setBundle basename="navbar" var="navbar"/>
     <fmt:setBundle basename="message" var="message"/>
@@ -29,7 +30,7 @@
             <li class="active"><a href="/RailwaySystem?command=main"><fmt:message key="navbar.main" bundle="${navbar}"/></a></li>        
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a class="navbar-brand"><fmt:message key="navbar.hello" bundle="${navbar}"/> ${username}</a></li>
+            <li><a class="navbar-brand"><hello:user name="${username}"/></a></li>
             <li><a href="/RailwaySystem?command=EN">EN</a></li>
             <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
             <li><a href="/RailwaySystem?command=logout"><fmt:message key="navbar.logout" bundle="${navbar}"/></a></li>
