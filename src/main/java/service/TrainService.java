@@ -50,6 +50,7 @@ public class TrainService {
             result.addAll(factory.createTrainDAO().findByRoute(route.getId()));
         }
 
+        LOG.info("Find Trains by Routes");
         return result;
     }
 
@@ -91,6 +92,7 @@ public class TrainService {
             }
         }
 
+        LOG.info(String.format("Find Trains FROM ID=%d -- TO ID=%d, FROM DATE=%s", fromId, toId, fromDate));
         return trainRoutes;
     }
 
@@ -116,37 +118,39 @@ public class TrainService {
         String resultDate = String.format("%02d.%02d.%04d\n%02d:%02d",
                 day, month, year, hour, minutes);
 
+        LOG.info("Format date - " + resultDate);
         return resultDate;
 
     }
 
-    public Train reserveCompartmentPlace(Train train){
+    Train reserveCompartmentPlace(Train train){
         train.setCompartmentFree(train.getCompartmentFree() - 1);
         return factory.createTrainDAO().update(train);
     }
 
 
-    public Train reserveBerthPlace(Train train){
+    Train reserveBerthPlace(Train train){
         train.setBerthFree(train.getBerthFree() - 1);
         return factory.createTrainDAO().update(train);
     }
 
 
-    public Train reserveDeluxePlace(Train train){
+    Train reserveDeluxePlace(Train train){
         train.setDeluxeFree(train.getDeluxeFree() - 1);
         return factory.createTrainDAO().update(train);
     }
 
-    public Train cancelBerthPlace(Train train){
+    Train cancelBerthPlace(Train train){
         train.setBerthFree(train.getBerthFree() + 1);
         return factory.createTrainDAO().update(train);
     }
 
-    public Train cancelCompartmentPlace(Train train){
+    Train cancelCompartmentPlace(Train train){
         train.setCompartmentFree(train.getCompartmentFree() + 1);
         return factory.createTrainDAO().update(train);
     }
-    public Train cancelDeluxePlace(Train train){
+
+    Train cancelDeluxePlace(Train train){
         train.setDeluxeFree(train.getDeluxeFree() + 1);
         return factory.createTrainDAO().update(train);
     }

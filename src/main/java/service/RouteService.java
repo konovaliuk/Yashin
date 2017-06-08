@@ -36,7 +36,7 @@ public class RouteService {
         return INSTANCE;
     }
 
-    public Route findRouteById(Long id){
+    Route findRouteById(Long id){
         return factory.createRouteDAO().findById(id);
     }
 
@@ -60,6 +60,8 @@ public class RouteService {
                 return o1.getName().compareTo(o2.getName());
             }
         });
+
+        LOG.info("Find All Available FROM Stations");
         return result;
     }
 
@@ -79,6 +81,8 @@ public class RouteService {
                 return o1.getName().compareTo(o2.getName());
             }
         });
+
+        LOG.info("Find All Available TO Stations");
         return result;
     }
 
@@ -92,6 +96,7 @@ public class RouteService {
             }
         }
 
+        LOG.info(String.format("Find Route by Stations: FROM %s --- TO %s", from.getName(), to.getName()));
         return result;
     }
 
@@ -111,22 +116,23 @@ public class RouteService {
             e.printStackTrace();
         }
 
+        LOG.info("Find Routes from TIME - " + date);
         return result;
     }
 
-    public Double findCompartmentPrice(Route route){
+    Double findCompartmentPrice(Route route){
         Price compartment = factory.createPriceDAO().findById(route.getPriceId());
         return compartment.getCompartmentFactor() * route.getDistance();
     }
 
 
-    public Double findBerthPrice(Route route){
+    Double findBerthPrice(Route route){
         Price compartment = factory.createPriceDAO().findById(route.getPriceId());
         return compartment.getBerthFactor() * route.getDistance();
     }
 
 
-    public Double findDeluxePrice(Route route){
+    Double findDeluxePrice(Route route){
         Price compartment = factory.createPriceDAO().findById(route.getPriceId());
         return compartment.getDeluxeFactor() * route.getDistance();
     }

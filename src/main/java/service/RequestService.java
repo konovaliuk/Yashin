@@ -12,6 +12,7 @@ import model.entity.Request;
 import model.entity.Route;
 import model.entity.Train;
 import model.entity.User;
+import service.util.LogMessageServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -128,6 +129,7 @@ public class RequestService {
             ticket.setTypePlace(parameter);
             ticket.setPrice(price);
             ticket.setUserId(user.getId());
+            LOG.info("Add Ticket for USER ID = " + user.getId());
             return ticket;
         }
         return null;
@@ -169,6 +171,7 @@ public class RequestService {
                 else return 0;
             }
         });
+        LOG.info("Find All Tickets");
         return result;
     }
 
@@ -191,6 +194,7 @@ public class RequestService {
             result.add(ticket1);
         }
 
+        LOG.info("Add Ticket to REQUEST");
         return result;
     }
 
@@ -203,5 +207,6 @@ public class RequestService {
         }
         Request request = factory.createRequestDAO().findById(ticket.getRequestId());
         factory.createRequestDAO().delete(request);
+        LOG.info("Cancel Ticket with (Request) ID = " + ticket.getRequestId());
     }
 }

@@ -5,15 +5,15 @@
     <title>Railway System</title>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./resources/css/bootstrap.css"/>"/>
+          href="<c:url value="/resources/css/bootstrap.css"/>"/>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./resources/css/bootstrap-theme.css"/>"/>
+          href="<c:url value="/resources/css/bootstrap-theme.css"/>"/>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="./resources/css/style.css"/>"/>
-    <script src="<c:url value="./resources/js/jquery-3.2.1.js"/> "></script>
-    <script src="<c:url value="./resources/js/bootstrap.min.js"/> "></script>
+          href="<c:url value="/resources/css/style.css"/>"/>
+    <script src="<c:url value="/resources/js/jquery-3.2.1.js"/> "></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js"/> "></script>
 </head>
 <body>
 
