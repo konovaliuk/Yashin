@@ -78,11 +78,6 @@ class MySQLRouteDAO implements RouteDAO{
     }
 
     @Override
-    public List<Route> findByToId(Long id) {
-        return findByParameter(LABEL_TO_ID, id);
-    }
-
-    @Override
     public Route create(Route route) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -156,9 +151,9 @@ class MySQLRouteDAO implements RouteDAO{
 
             statement.executeUpdate();
 
-            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, route.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, route.getId()));
         } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, route.getId()));
         } finally {
             close(connection, statement);
         }

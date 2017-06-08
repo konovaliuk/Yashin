@@ -135,9 +135,9 @@ class MySQLStationDAO implements StationDAO{
 
             statement.executeUpdate();
 
-            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, station.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, station.getId()));
         } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorUpdate(TABLE_NAME, station.getId()));
         } finally {
             close(connection, statement);
         }
@@ -161,7 +161,7 @@ class MySQLStationDAO implements StationDAO{
 
             LOG.info(LogMessageDAOUtil.createInfoDelete(TABLE_NAME, station.getId()));
         } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorDelete(TABLE_NAME, station.getId()));
         } finally {
             close(connection, statement);
         }

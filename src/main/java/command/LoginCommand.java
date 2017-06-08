@@ -30,18 +30,29 @@ public class LoginCommand implements Command {
         if(user == null){
             page = redirectToErrorPage(request);
         } else {
-            if (LoginService.getInstance().checkPassword(user, password)) {
-                if(user.isAdmin()){
-                    page = redirectToAdminPage(request, user);
-                } else {
-                    page = redirectToUserPage(request, user);
-                }
-            } else {
-                page = redirectToErrorPage(request);
-            }
+            page = checkIfCorrectPassword(user, request, password);
+        }
+        return page;
+    }
+
+    private String checkIfCorrectPassword(User user, HttpServletRequest request, String inputPassword){
+        String page = null;
+        if (LoginService.getInstance().checkPassword(user, inputPassword)) {
+            page = checkIfAdmin(user, request);
+        } else {
+            page = redirectToErrorPage(request);
         }
 
+        return page;
+    }
 
+    private String checkIfAdmin(User user, HttpServletRequest request){
+        String page = null;
+        if(user.isAdmin()){
+            page = redirectToAdminPage(request, user);
+        } else {
+            page = redirectToUserPage(request, user);
+        }
         return page;
     }
 

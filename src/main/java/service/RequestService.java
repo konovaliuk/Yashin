@@ -23,6 +23,7 @@ public class RequestService {
     private static final DataBase DB = DataBase.MYSQL;
     private static RequestService INSTANCE;
 
+
     private DAOFactory factory;
 
     private RequestService(){

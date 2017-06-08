@@ -3,6 +3,12 @@ package model.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity to table <b>PRICE</b>
+ *
+ * @author Andrii Yashin
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 public class Price {

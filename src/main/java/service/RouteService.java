@@ -40,7 +40,7 @@ public class RouteService {
         return factory.createRouteDAO().findById(id);
     }
 
-    public Route findRouteByTrain(Train train){
+    Route findRouteByTrain(Train train){
         return factory.createRouteDAO().findById(train.getRouteId());
     }
 
@@ -82,7 +82,7 @@ public class RouteService {
         return result;
     }
 
-    public List<Route> findRouteByStations(Station from, Station to){
+    List<Route> findRouteByStations(Station from, Station to){
         List<Route> routes = factory.createRouteDAO().findByFromId(from.getId());
         List<Route> result = new ArrayList<>();
 
@@ -112,17 +112,6 @@ public class RouteService {
         }
 
         return result;
-    }
-
-    public Station findFromStation(Train train){
-        Route route = findRouteByTrain(train);
-        return StationService.getInstance().findFromStation(route);
-    }
-
-
-    public Station findToStation(Train train){
-        Route route = findRouteByTrain(train);
-        return StationService.getInstance().findToStation(route);
     }
 
     public Double findCompartmentPrice(Route route){

@@ -68,6 +68,7 @@ class MySQLPriceDAO implements PriceDAO{
             if (set.next()){
                 result = getPrice(set);
             }
+            LOG.info(LogMessageDAOUtil.createInfoFindByParameter(TABLE_NAME, LABEL_ID, id));
         } catch (SQLException e){
             LOG.severe(LogMessageDAOUtil.createErrorFindByParameter(TABLE_NAME, LABEL_ID, id));
         } finally {

@@ -4,6 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity to table <b>ROUTE</b>
+ *
+ * @author Andrii Yashin
+ * @version 1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

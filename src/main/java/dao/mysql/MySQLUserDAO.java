@@ -158,9 +158,9 @@ class MySQLUserDAO implements UserDAO{
                 user.setId(set.getLong(1));
             }
 
-            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, user.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, user.getId()));
         } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, user.getId()));
         } finally {
             close(connection, statement);
         }
@@ -190,29 +190,6 @@ class MySQLUserDAO implements UserDAO{
         }
     }
 
-    private void close(Connection connection, Statement statement){
-        try {
-            if (connection != null) connection.close();
-            if (statement!= null) statement.close();
-        } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorClose());
-        }
-    }
-
-    private User getUser(ResultSet set) throws SQLException{
-        User result = new User();
-        result.setId(set.getLong(LABEL_ID));
-        result.setEmail(set.getString(LABEL_EMAIL));
-        result.setPassword(set.getString(LABEL_PASSWORD));
-
-        result.setName(set.getString(LABEL_NAME));
-        result.setSurname(set.getString(LABEL_SURNAME));
-        result.setPhone(set.getString(LABEL_PHONE));
-
-        result.setAdmin(set.getBoolean(LABEL_ADMIN));
-        return result;
-    }
-
     private List<User> findByParameter(String label, Object parameter){
         List<User> result = new ArrayList<>();
         Connection connection = null;
@@ -236,6 +213,29 @@ class MySQLUserDAO implements UserDAO{
             close(connection, statement);
         }
 
+        return result;
+    }
+
+    private void close(Connection connection, Statement statement){
+        try {
+            if (connection != null) connection.close();
+            if (statement!= null) statement.close();
+        } catch (SQLException e) {
+            LOG.severe(LogMessageDAOUtil.createErrorClose());
+        }
+    }
+
+    private User getUser(ResultSet set) throws SQLException{
+        User result = new User();
+        result.setId(set.getLong(LABEL_ID));
+        result.setEmail(set.getString(LABEL_EMAIL));
+        result.setPassword(set.getString(LABEL_PASSWORD));
+
+        result.setName(set.getString(LABEL_NAME));
+        result.setSurname(set.getString(LABEL_SURNAME));
+        result.setPhone(set.getString(LABEL_PHONE));
+
+        result.setAdmin(set.getBoolean(LABEL_ADMIN));
         return result;
     }
 }

@@ -56,16 +56,6 @@ class MySQLRequestDAO implements RequestDAO{
     }
 
     @Override
-    public List<Request> findByTrain(Long id) {
-        return findByParameter(id, LABEL_TRAIN_ID);
-    }
-
-    @Override
-    public List<Request> findByUser(Long id) {
-        return findByParameter(id, LABEL_USER_ID);
-    }
-
-    @Override
     public Request findById(Long id) {
         List<Request> result = findByParameter(id, LABEL_ID);
         if(result.size() != 1)
@@ -136,9 +126,9 @@ class MySQLRequestDAO implements RequestDAO{
 
             statement.executeUpdate();
 
-            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, request.getId()));
+            LOG.info(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, request.getId()));
         } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorUpdate(TABLE_NAME, request.getId()));
         } finally {
             close(connection, statement);
         }
@@ -162,7 +152,7 @@ class MySQLRequestDAO implements RequestDAO{
 
             LOG.info(LogMessageDAOUtil.createInfoDelete(TABLE_NAME, request.getId()));
         } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
+            LOG.severe(LogMessageDAOUtil.createErrorDelete(TABLE_NAME, request.getId()));
         } finally {
             close(connection, statement);
         }

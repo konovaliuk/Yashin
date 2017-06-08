@@ -9,6 +9,7 @@ public class LogMessageServiceUtil {
     private static final Character DOT = '.';
 
 
+
     public static String createMethodInfo(String dao, String method){
         StringBuilder builder = new StringBuilder();
         builder.append(SUCCESSFUL_OPERATION).append(dao).append(DOT);

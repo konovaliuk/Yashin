@@ -47,7 +47,6 @@ public class LoginService {
         User createdUser = factory.createUserDAO().create(user);
         if (createdUser == null){
             LOG.severe(LogMessageServiceUtil.createMethodError(USER_DAO, ADD_USER));
-            //throw new InvalidDataBaseOperation();
         }
 
         LOG.info(LogMessageServiceUtil.createMethodInfo(USER_DAO, ADD_USER));
@@ -59,7 +58,7 @@ public class LoginService {
         return securePassword.equals(user.getPassword());
     }
 
-    public User securePassword(final User user){
+    private User securePassword(final User user){
         String securePassword = DigestUtils.md5Hex(user.getPassword());
         user.setPassword(securePassword);
         return user;

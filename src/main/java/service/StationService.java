@@ -30,11 +30,11 @@ public class StationService {
         return INSTANCE;
     }
 
-    public Station findFromStation(Route route){
+    Station findFromStation(Route route){
         return factory.createStationDAO().findById(route.getFromId());
     }
 
-    public Station findToStation(Route route){
+    Station findToStation(Route route){
         return factory.createStationDAO().findById(route.getToId());
     }
 }

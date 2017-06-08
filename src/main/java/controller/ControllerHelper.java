@@ -10,7 +10,6 @@ import command.user.SelectCityDateTimeCommand;
 import command.user.MakeTicketsCommand;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.jstl.core.Config;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -26,20 +25,20 @@ public class ControllerHelper {
         bundle = ResourceBundle.getBundle(BUNDLE_NAME);
         commands.put(bundle.getString("command.login"), new LoginCommand());
         commands.put(bundle.getString("command.register"), new RegisterCommand());
-        commands.put(bundle.getString("command.selectDateTime"), new SelectCityDateTimeCommand());
-        commands.put(bundle.getString("command.make"), new MakeTicketsCommand());
+        commands.put(bundle.getString("command.user.selectDateTime"), new SelectCityDateTimeCommand());
+        commands.put(bundle.getString("command.user.make"), new MakeTicketsCommand());
         commands.put(bundle.getString("command.logout"), new LogoutCommand());
-        commands.put(bundle.getString("command.book"), new BookTicketsCommand());
+        commands.put(bundle.getString("command.user.book"), new BookTicketsCommand());
         commands.put(bundle.getString("command.en"), new SetENCommand());
         commands.put(bundle.getString("command.ukr"), new SetUKRCommand());
 
-        commands.put(bundle.getString("command.adminUser"), new ChangeUsersCommand());
-        commands.put(bundle.getString("command.tickets"), new TicketCommand());
-        commands.put(bundle.getString("command.users"), new UsersCommand());
-        commands.put(bundle.getString("command.main"), new MainPageCommand());
+        commands.put(bundle.getString("command.admin.adminUser"), new ChangeUsersCommand());
+        commands.put(bundle.getString("command.admin.tickets"), new TicketCommand());
+        commands.put(bundle.getString("command.admin.users"), new UsersCommand());
+        commands.put(bundle.getString("command.user.main"), new MainPageCommand());
 
-        commands.put(bundle.getString("command.cancel"), new CancelTicketsCommand());
-        commands.put(bundle.getString("command.cancelAll"), new CancelAllTicketsCommand());
+        commands.put(bundle.getString("command.admin.cancel"), new CancelTicketsCommand());
+        commands.put(bundle.getString("command.admin.cancelAll"), new CancelAllTicketsCommand());
     }
 
     public static ControllerHelper getInstance() {

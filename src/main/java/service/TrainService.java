@@ -42,6 +42,7 @@ public class TrainService {
     public Train findTrainById(Long id){
         return factory.createTrainDAO().findById(id);
     }
+
     public List<Train> findTrainsForRoutes(List<Route> routes){
         List<Train> result = new ArrayList<>();
 
@@ -93,7 +94,7 @@ public class TrainService {
         return trainRoutes;
     }
 
-    public String formatDate(String date){
+    String formatDate(String date){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
         Date result = null;
         try {

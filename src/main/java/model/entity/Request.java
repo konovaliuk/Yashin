@@ -3,6 +3,12 @@ package model.entity;
 import dao.mysql.TypePlace;
 import lombok.*;
 
+/**
+ * Entity to table <b>REQUEST</b>
+ *
+ * @author Andrii Yashin
+ * @version 1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

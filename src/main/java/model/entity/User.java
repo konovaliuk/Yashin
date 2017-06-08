@@ -2,6 +2,12 @@ package model.entity;
 
 import lombok.*;
 
+/**
+ * Entity to table <b>USER</b>
+ *
+ * @author Andrii Yashin
+ * @version 1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
