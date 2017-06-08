@@ -16,7 +16,13 @@ import java.util.logging.Logger;
 
 public class Controller extends HttpServlet {
     private static final Logger LOG = Logger.getLogger(Controller.class.getName());
-    ControllerHelper controllerHelper = ControllerHelper.getInstance();
+
+    private static final String CHARACTER_ENCODING = "UTF-8";
+    private static final String CONTENT_TYPE = "text/html;charset=utf-8";
+    private static final String MESSAGE_ERROR_ATTRIBUTE = "messageError";
+    private static final String PAGE_IS_NULL = "Page is NULL";
+
+    private ControllerHelper controllerHelper = ControllerHelper.getInstance();
 
     @Override
     public void init() throws ServletException {
@@ -57,33 +63,30 @@ public class Controller extends HttpServlet {
             page = command.execute(request, response);
         } catch (ServletException e) {
             LOG.severe(e.getMessage());
-            request.setAttribute("messageError", Message.getInstance().getMessage(Message.SERVLET_EXCEPTION));
+            request.setAttribute(MESSAGE_ERROR_ATTRIBUTE, Message.getInstance().getMessage(Message.SERVLET_EXCEPTION));
             page = Configuration.getInstance().getConfig(Configuration.ERROR);
 
         } catch (IOException e) {
             LOG.severe(e.getMessage());
-            request.setAttribute("messageError", Message.getInstance().getMessage(Message.IO_EXCEPTION));
+            request.setAttribute(MESSAGE_ERROR_ATTRIBUTE, Message.getInstance().getMessage(Message.IO_EXCEPTION));
             page = Configuration.getInstance().getConfig(Configuration.ERROR);
 
         } catch (Exception e) {
             LOG.severe(e.getMessage());
-            request.setAttribute("messageError", Message.getInstance().getMessage(Message.EXCEPTION));
+            request.setAttribute(MESSAGE_ERROR_ATTRIBUTE, Message.getInstance().getMessage(Message.EXCEPTION));
             page = Configuration.getInstance().getConfig(Configuration.ERROR);
 
         }
 
         if (page == null) {
-            request.setAttribute("messageError", Message.getInstance().getMessage(Message.PAGE_IS_NULL));
+            LOG.severe(PAGE_IS_NULL);
+            request.setAttribute(MESSAGE_ERROR_ATTRIBUTE, Message.getInstance().getMessage(Message.PAGE_IS_NULL));
             page = Configuration.getInstance().getConfig(Configuration.ERROR);
         }
 
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=utf-8");
+        response.setCharacterEncoding(CHARACTER_ENCODING);
+        response.setContentType(CONTENT_TYPE);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
-
-
-
-
 }

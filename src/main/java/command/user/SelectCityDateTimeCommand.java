@@ -16,8 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static command.user.CommandUserAdmin.USERNAME_ATTRIBUTE;
-import static command.user.CommandUserAdmin.USER_ATTRIBUTE;
+import static command.user.CommandUserUtil.*;
 
 public class SelectCityDateTimeCommand implements Command {
     @Override
@@ -27,11 +26,11 @@ public class SelectCityDateTimeCommand implements Command {
             return Configuration.getInstance().getConfig(Configuration.LOGIN);
 
         String page = Configuration.getInstance().getConfig(Configuration.DATE);
-        Long from_id = Long.parseLong(request.getParameter("from"));
-        Long to_id = Long.parseLong(request.getParameter("to"));
-        Integer time = Integer.parseInt(request.getParameter("time"));
-        String dateString = request.getParameter("date");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Long from_id = Long.parseLong(request.getParameter(FROM_PARAMETER));
+        Long to_id = Long.parseLong(request.getParameter(TO_PARAMETER));
+        Integer time = Integer.parseInt(request.getParameter(TIME_PARAMETER));
+        String dateString = request.getParameter(DATE_PARAMETER);
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 
         Date date = null;
         try {
@@ -43,17 +42,17 @@ public class SelectCityDateTimeCommand implements Command {
 
         List<TrainRoute> trains = TrainService.getInstance().findTrainsAndRoutes(from_id, to_id, date);
 
-        request.setAttribute("cityFrom", RouteService.getInstance().findAvailableFromStations());
-        request.setAttribute("cityTo", RouteService.getInstance().findAvailableToStations());
+        request.setAttribute(CITIES_FROM_ATTRIBUTE, RouteService.getInstance().findAvailableFromStations());
+        request.setAttribute(CITIES_TO_ATTRIBUTE, RouteService.getInstance().findAvailableToStations());
 
-        request.setAttribute("from", from_id);
-        request.setAttribute("to", to_id);
-        request.setAttribute("trains", trains);
+        request.setAttribute(FROM_PARAMETER, from_id);
+        request.setAttribute(TO_PARAMETER, to_id);
+        request.setAttribute(TRAINS_ATTRIBUTE, trains);
         if(trains.isEmpty()){
-            request.setAttribute("noTrain", true);
+            request.setAttribute(NO_TRAINS_ATTRIBUTE, true);
         }
-        request.setAttribute("dateNow", format.format(date));
-        request.setAttribute("time", time);
+        request.setAttribute(DATE_NOW_ATTRIBUTE, format.format(date));
+        request.setAttribute(TIME_PARAMETER, time);
 
         request.setAttribute(USERNAME_ATTRIBUTE, userNow.getName());
         return page;

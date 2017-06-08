@@ -12,8 +12,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static command.user.CommandUserAdmin.USERNAME_ATTRIBUTE;
-import static command.user.CommandUserAdmin.USER_ATTRIBUTE;
+import static command.user.CommandUserUtil.*;
 
 public class MainPageCommand implements Command{
     @Override
@@ -22,13 +21,13 @@ public class MainPageCommand implements Command{
         if(userNow == null)
             return Configuration.getInstance().getConfig(Configuration.LOGIN);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 
-        request.setAttribute("cityFrom", RouteService.getInstance().findAvailableFromStations());
-        request.setAttribute("cityTo", RouteService.getInstance().findAvailableToStations());
-        request.setAttribute("trains", null);
+        request.setAttribute(CITIES_FROM_ATTRIBUTE, RouteService.getInstance().findAvailableFromStations());
+        request.setAttribute(CITIES_TO_ATTRIBUTE, RouteService.getInstance().findAvailableToStations());
+        request.setAttribute(TRAINS_ATTRIBUTE, null);
         request.setAttribute(USERNAME_ATTRIBUTE, userNow.getName());
-        request.setAttribute("dateNow", format.format(new Date()));
+        request.setAttribute(DATE_NOW_ATTRIBUTE, format.format(new Date()));
         return Configuration.getInstance().getConfig(Configuration.DATE);
     }
 }

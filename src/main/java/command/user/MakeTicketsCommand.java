@@ -3,9 +3,8 @@ package command.user;
 import command.Command;
 import dto.Ticket;
 import dto.TrainRoute;
-import model.entity.Route;
 import model.entity.User;
-import service.RouteService;
+import service.RequestService;
 import service.TrainService;
 import util.Configuration;
 
@@ -19,8 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static command.user.CommandUserAdmin.USERNAME_ATTRIBUTE;
-import static command.user.CommandUserAdmin.USER_ATTRIBUTE;
+import static command.user.CommandUserUtil.*;
 
 public class MakeTicketsCommand implements Command {
     @Override
@@ -30,11 +28,11 @@ public class MakeTicketsCommand implements Command {
             return Configuration.getInstance().getConfig(Configuration.LOGIN);
 
         String page = Configuration.getInstance().getConfig(Configuration.ORDER);
-        Long from_id = Long.parseLong(request.getParameter("from"));
-        Long to_id = Long.parseLong(request.getParameter("to"));
-        Integer time = Integer.parseInt(request.getParameter("time"));
-        String dateString = request.getParameter("date");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Long from_id = Long.parseLong(request.getParameter(FROM_PARAMETER));
+        Long to_id = Long.parseLong(request.getParameter(TO_PARAMETER));
+        Integer time = Integer.parseInt(request.getParameter(TIME_PARAMETER));
+        String dateString = request.getParameter(DATE_ATTRIBUTE);
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 
         Date date = null;
         try {
@@ -44,58 +42,23 @@ public class MakeTicketsCommand implements Command {
             e.printStackTrace();
         }
 
+        User user = (User) request.getSession().getAttribute(USER_ATTRIBUTE);
         List<TrainRoute> trains = TrainService.getInstance().findTrainsAndRoutes(from_id, to_id, date);
         List<Ticket> tickets = new ArrayList<>();
         for (TrainRoute trainRoute : trains) {
-            String parameter = request.getParameter("train" + trainRoute.getTrainId());
-            if (!parameter.equals("none")) {
-                Ticket ticket = new Ticket();
-                ticket.setTrainId(trainRoute.getTrainId());
+            String parameter = request.getParameter(TRAIN_PARAMETER + trainRoute.getTrainId());
 
-                ticket.setFromCity(trainRoute.getFromCity());
-                ticket.setToCity(trainRoute.getToCity());
-
-                ticket.setFromDate(trainRoute.getFromDate());
-                ticket.setToDate(trainRoute.getToDate());
-
-                User user = (User) request.getSession().getAttribute("user");
-                ticket.setName(user.getName());
-                ticket.setSurname(user.getSurname());
-
-                Double price;
-                Long max;
-                Route route = RouteService.getInstance().findRouteById(trainRoute.getRouteId());
-                switch (parameter){
-                    case "C": {
-                        max = trainRoute.getCompartmentFree();
-                        price = RouteService.getInstance().findCompartmentPrice(route);
-                        break;
-                    }
-                    case "L": {
-                        max = trainRoute.getDeluxeFree();
-                        price = RouteService.getInstance().findDeluxePrice(route);
-                        break;
-                    }
-                    default: {
-                        max = trainRoute.getBerthFree();
-                        price = RouteService.getInstance().findBerthPrice(route);
-                        break;
-                    }
-                }
-                ticket.setMax(max);
-                ticket.setTypePlace(parameter);
-                ticket.setPrice(price);
-                ticket.setUserId(user.getId());
+            Ticket ticket = RequestService.getInstance().makeTicket(parameter, user, trainRoute);
+            if (ticket != null){
                 tickets.add(ticket);
             }
-
         }
 
         if (tickets.isEmpty()){
-            request.setAttribute("noTickets", true);
+            request.setAttribute(NO_TICKETS_ATTRIBUTE, true);
         } else{
-            request.setAttribute("tickets", tickets);
-            request.getSession(false).setAttribute("tickets", tickets);
+            request.setAttribute(TICKETS_ATTRIBUTE, tickets);
+            request.getSession(false).setAttribute(TICKETS_ATTRIBUTE, tickets);
         }
         request.setAttribute(USERNAME_ATTRIBUTE, userNow.getName());
         return page;

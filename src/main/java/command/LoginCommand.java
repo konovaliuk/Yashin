@@ -1,7 +1,6 @@
 package command;
 
 import model.entity.User;
-import org.apache.commons.codec.digest.DigestUtils;
 import service.AdminService;
 import service.LoginService;
 import service.RouteService;
@@ -14,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static command.CommandUtil.*;
 
 public class LoginCommand implements Command {
     private static final String EMAIL = "email";
@@ -58,31 +59,30 @@ public class LoginCommand implements Command {
 
     private String redirectToAdminPage(HttpServletRequest request, User user){
         HttpSession session = request.getSession(false);
-        session.setAttribute("user", user);
+        session.setAttribute(USER_ATTRIBUTE, user);
 
-        request.setAttribute("users", AdminService.getInstance().getAllUsers());
-        request.setAttribute("username", user.getName());
+        request.setAttribute(USERS_ATTRIBUTE, AdminService.getInstance().getAllUsers());
+        request.setAttribute(USERNAME_ATTRIBUTE, user.getName());
         return Configuration.getInstance().getConfig(Configuration.ADMIN);
     }
 
     private String redirectToUserPage(HttpServletRequest request, User user){
         HttpSession session = request.getSession(false);
-        session.setAttribute("user", user);
-        session.setMaxInactiveInterval(30*60);
+        session.setAttribute(USER_ATTRIBUTE, user);
 
-        request.setAttribute("cityFrom", RouteService.getInstance().findAvailableFromStations());
-        request.setAttribute("cityTo", RouteService.getInstance().findAvailableToStations());
-        request.setAttribute("trains", null);
+        request.setAttribute(CITIES_FROM_ATTRIBUTE, RouteService.getInstance().findAvailableFromStations());
+        request.setAttribute(CITIES_TO_ATTRIBUTE, RouteService.getInstance().findAvailableToStations());
+        request.setAttribute(TRAINS_ATTRIBUTE, null);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        request.setAttribute("dateNow", format.format(new Date()));
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
+        request.setAttribute(DATE_NOW_ATTRIBUTE, format.format(new Date()));
 
-        request.setAttribute("username", user.getName());
+        request.setAttribute(USERNAME_ATTRIBUTE, user.getName());
         return Configuration.getInstance().getConfig(Configuration.DATE);
     }
 
     private String redirectToErrorPage(HttpServletRequest request){
-        request.setAttribute("errorMessage", true);
+        request.setAttribute(ERROR_MESSAGE, true);
         return Configuration.getInstance().getConfig(Configuration.LOGIN);
     }
 }
