@@ -14,7 +14,7 @@ import static command.localization.CommandLanguageUtil.USER_ATTRIBUTE;
 public class SetUKRCommand implements Command{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession(false).getAttribute(USER_ATTRIBUTE);
+        request.getSession(false).setAttribute(USER_ATTRIBUTE, null);
         Config.set(request.getSession(false), Config.FMT_LOCALE, CommandLanguageUtil.UKRAINIAN);
         return Configuration.getInstance().getConfig(Configuration.LOGIN);
     }

@@ -41,7 +41,7 @@
 <div class="col-md-2"></div>
 <div class="col-md-8">
     <c:if test="${not empty noTickets}">
-        <fmt:message key="message.noTickets" bundle="${message}"/>
+        <h1><fmt:message key="message.noTickets" bundle="${message}"/></h1>
     </c:if>
     <c:if test="${not empty tickets}">
         <form action="/RailwaySystem/make" method="post" class="text-center">
