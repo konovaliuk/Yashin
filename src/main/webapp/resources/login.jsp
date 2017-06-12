@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,12 +46,14 @@
                    required
                    class="form-control"
                    style="width: 100%; margin-bottom: 10px"
+                   value="${fn:escapeXml(email)}"
             />
             <input type="password" placeholder="<fmt:message key="login.placeholderPassword" bundle="${login}"/>"
                    name="password" id="pwd"
                    required
                    class="form-control"
                    style="width: 100%; margin-bottom: 10px"
+                   value="${fn:escapeXml(password)}"
             />
 
             <button class="btn btn-primary" type="submit" value="login" name="command"><fmt:message key="login.signIn"

@@ -1,7 +1,9 @@
 package dao;
 
+import exception.InvalidDataBaseOperation;
 import model.entity.Request;
 
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -45,4 +47,9 @@ public interface RequestDAO {
      * @author Andrii Yashin
      */
     void delete(Request request);
+
+
+    void deleteRequests(List<Request> requests) throws InvalidDataBaseOperation;
+    void approveRequests(List<Request> requests) throws InvalidDataBaseOperation;
+
 }

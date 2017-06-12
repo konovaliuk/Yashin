@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="hello" uri="/WEB-INF/lib/hello.tld" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>Railway System</title>
@@ -30,7 +31,7 @@
             <li><a href="/RailwaySystem?command=main"><fmt:message key="navbar.main" bundle="${navbar}"/></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a class="navbar-brand"><hello:user name="${username}"/></a></li>
+            <li><a class="navbar-brand"><hello:user name="${fn:escapeXml(username)}"/></a></li>
             <li><a href="/RailwaySystem?command=EN">EN</a></li>
             <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
             <li><a href="/RailwaySystem?command=logout"><fmt:message key="navbar.logout" bundle="${navbar}"/></a></li>

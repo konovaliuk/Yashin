@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>Railway System</title>
@@ -36,27 +37,32 @@
                    required
                    class="form-control"
                    style="width: 100%; margin-bottom: 10px"
+                   value="${fn:escapeXml(email)}"
             />
             <input type="password" placeholder="<fmt:message key="login.passwordRegister" bundle="${login}"/>"
                    minlength="8" name="password" required
                    class="form-control"
                    style="width: 100%; margin-bottom: 10px"
+                   value="${fn:escapeXml(password)}"
             />
             <input type="text" placeholder="<fmt:message key="login.name" bundle="${login}"/>" name="name"
                    required
                    class="form-control"
                    style="width: 100%; margin-bottom: 10px"
+                   value="${fn:escapeXml(name)}"
             />
             <input type="text" placeholder="<fmt:message key="login.surname" bundle="${login}"/>" name="surname"
                    required
                    class="form-control"
                    style="width: 100%; margin-bottom: 10px"
+                   value="${fn:escapeXml(surname)}"
             />
             <%--pattern="\([0-9]{3}\)\s[0-9]{3}-[0-9]{2}-[0-9]{2}"--%>
             <input type="tel" name="phone" placeholder="<fmt:message key="login.tel" bundle="${login}"/>"
                    required
                    class="form-control"
                    style="width: 100%; margin-bottom: 10px"
+                   value="${fn:escapeXml(phone)}"
             />
             <c:if test="${requestScope.errorMessage != null}">
                 <h4><fmt:message key="message.containsEmail" bundle="${message}"/></h4>

@@ -23,7 +23,7 @@ public class BookTicketsCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User userNow = (User) request.getSession(false).getAttribute(USER_ATTRIBUTE);
+         User userNow = (User) request.getSession(false).getAttribute(USER_ATTRIBUTE);
         if(userNow == null)
             return Configuration.getInstance().getConfig(Configuration.LOGIN);
 

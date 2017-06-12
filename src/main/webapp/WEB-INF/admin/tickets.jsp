@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="hello" uri="/WEB-INF/lib/hello.tld" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
@@ -35,7 +36,7 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a class="navbar-brand"><hello:user name="${username}"/></a></li>
+            <li><a class="navbar-brand"><hello:user name="${fn:escapeXml(username)}"/></a></li>
             <li><a href="/RailwaySystem?command=EN">EN</a></li>
             <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
             <li class="right"><a href="/RailwaySystem?command=logout"><fmt:message key="navbar.logout"
@@ -50,6 +51,8 @@
                 key="tickets.cancelButton" bundle="${ticketsPage}"/></button>
         <button type="submit" name="command" value="cancelAll" class="btn btn-primary btn-md"><fmt:message
                 key="tickets.cancelAllButton" bundle="${ticketsPage}"/></button>
+
+        <button type="submit" name="command" value="approve" class="btn btn-primary btn-md">Approve</button>
         <table class="table" style="margin-top: 15px">
             <tr>
                 <th><fmt:message key="tickets.application" bundle="${ticketsPage}"/></th>
@@ -62,7 +65,10 @@
                 <th><fmt:message key="tickets.to" bundle="${ticketsPage}"/></th>
                 <th><fmt:message key="tickets.type" bundle="${ticketsPage}"/></th>
                 <th><fmt:message key="tickets.price" bundle="${ticketsPage}"/></th>
+                <th>status</th>
                 <th><fmt:message key="tickets.cancel" bundle="${ticketsPage}"/></th>
+                <th>approve</th>
+                <th>none</th>
             </tr>
             <tr>
                 <c:forEach items="${tickets}" var="ticket">
@@ -77,7 +83,10 @@
                 <td>${ticket.toCity}</td>
                 <td>${ticket.typePlace}</td>
                 <td>${ticket.price}</td>
-                <td><input type="checkbox" name="${ticket.requestId}" value="cancel"></td>
+                <td>${ticket.status}</td>
+                <td><input type="radio" name="${ticket.requestId}" value="cancel"></td>
+                <td><input type="radio" name="${ticket.requestId}" value="approve"></td>
+                <td><input type="radio" name="${ticket.requestId}" value="none" checked></td>
             </tr>
             </c:forEach>
             </tr>

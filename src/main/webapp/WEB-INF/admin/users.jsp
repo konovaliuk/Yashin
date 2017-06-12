@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="hello" uri="/WEB-INF/lib/hello.tld" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>Railway System</title>
@@ -34,7 +35,7 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a class="navbar-brand"><hello:user name="${username}"/></a></li>
+            <li><a class="navbar-brand"><hello:user name="${fn:escapeXml(username)}"/></a></li>
             <li><a href="/RailwaySystem?command=EN">EN</a></li>
             <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
             <li class="right"><a href="/RailwaySystem?command=logout"><fmt:message key="navbar.logout"
@@ -58,9 +59,9 @@
             <c:forEach items="${users}" var="user">
                 <tr>
                     <td>${user.email}</td>
-                    <td>${user.name}</td>
-                    <td>${user.surname}</td>
-                    <td>${user.phone}</td>
+                    <td><c:out value="${user.name}"/></td>
+                    <td><c:out value="${user.surname}"/></td>
+                    <td><c:out value="${user.phone}"/></td>
                     <td>${user.admin}</td>
                     <td>
                         <select name="${user.id}" class="form-control">

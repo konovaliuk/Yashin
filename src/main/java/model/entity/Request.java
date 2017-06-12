@@ -21,6 +21,8 @@ public class Request {
 
     private Double price;
 
+    private Long status;
+
 
     public static class RequestBuilder{
         private Request request;
@@ -49,8 +51,14 @@ public class Request {
             return this;
         }
 
+        public RequestBuilder setStatus(Long status){
+            request.setStatus(status);
+            return this;
+        }
+
         public Request build(){
             return request;
         }
+
     }
 }

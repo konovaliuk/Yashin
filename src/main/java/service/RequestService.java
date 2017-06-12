@@ -1,5 +1,6 @@
 package service;
 
+import com.sun.org.apache.regexp.internal.RE;
 import dao.AbstractDAOFactory;
 import dao.DAOFactory;
 import dao.DataBase;
@@ -24,7 +25,6 @@ public class RequestService {
     private static final Logger LOG = Logger.getLogger(RequestDAO.class.getName());
     private static final DataBase DB = DataBase.MYSQL;
     private static RequestService INSTANCE;
-
 
     private DAOFactory factory;
 
@@ -85,6 +85,7 @@ public class RequestService {
                     .setType(TypePlace.valueOf(ticket.getTypePlace()))
                     .setUserId(ticket.getUserId())
                     .setTrainId(ticket.getTrainId())
+                    .setStatus(ticket.getStatus())
                     .build();
 
             ticket.setRequestId(addRequest(request).getId());
@@ -129,6 +130,7 @@ public class RequestService {
             ticket.setTypePlace(parameter);
             ticket.setPrice(price);
             ticket.setUserId(user.getId());
+            ticket.setStatus(0L);
             LOG.info("Add Ticket for USER ID = " + user.getId());
             return ticket;
         }
@@ -160,6 +162,7 @@ public class RequestService {
             ticket.setTypePlace(request.getType().toString());
             ticket.setPrice(request.getPrice());
             ticket.setUserId(user.getId());
+            ticket.setStatus(request.getStatus());
             result.add(ticket);
         }
 
@@ -191,6 +194,7 @@ public class RequestService {
             ticket1.setToCity(ticket.getToCity());
             ticket1.setMax(ticket.getMax());
             ticket1.setTrainId(ticket.getTrainId());
+            ticket1.setStatus(0L);
             result.add(ticket1);
         }
 
@@ -198,15 +202,19 @@ public class RequestService {
         return result;
     }
 
-    public void cancelRequest(Ticket ticket){
-        Train train = TrainService.getInstance().findTrainById(ticket.getTrainId());
-        switch (ticket.getTypePlace()){
-            case "C": TrainService.getInstance().cancelCompartmentPlace(train); break;
-            case "L": TrainService.getInstance().cancelDeluxePlace(train); break;
-            default: TrainService.getInstance().cancelBerthPlace(train); break;
+    public void cancelRequest(List<Ticket> tickets) throws InvalidDataBaseOperation{
+        List<Request> requests = new ArrayList<>();
+        for(Ticket ticket1 : tickets){
+            requests.add(factory.createRequestDAO().findById(ticket1.getRequestId()));
         }
-        Request request = factory.createRequestDAO().findById(ticket.getRequestId());
-        factory.createRequestDAO().delete(request);
-        LOG.info("Cancel Ticket with (Request) ID = " + ticket.getRequestId());
+        factory.createRequestDAO().deleteRequests(requests);
+    }
+
+    public void approveRequest(List<Ticket> tickets) throws InvalidDataBaseOperation{
+        List<Request> requests = new ArrayList<>();
+        for(Ticket ticket1 : tickets){
+            requests.add(factory.createRequestDAO().findById(ticket1.getRequestId()));
+        }
+        factory.createRequestDAO().approveRequests(requests);
     }
 }

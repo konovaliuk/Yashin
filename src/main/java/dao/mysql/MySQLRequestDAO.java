@@ -4,7 +4,10 @@ import dao.ConnectionPool;
 import dao.RequestDAO;
 import dao.mysql.util.LogMessageDAOUtil;
 import dao.mysql.util.QueryDAOUtil;
+import exception.InvalidDataBaseOperation;
 import model.entity.Request;
+import model.entity.Train;
+
 import java.util.logging.Logger;
 
 import java.sql.*;
@@ -22,6 +25,7 @@ class MySQLRequestDAO implements RequestDAO{
     private static final String LABEL_TRAIN_ID = "trainId";
     private static final String LABEL_TYPE = "type";
     private static final String LABEL_PRICE = "price";
+    private static final String LABEL_STATUS = "status";
 
     private MySQLRequestDAO(){}
 
@@ -75,7 +79,8 @@ class MySQLRequestDAO implements RequestDAO{
                     LABEL_USER_ID,
                     LABEL_TRAIN_ID,
                     LABEL_PRICE,
-                    LABEL_TYPE);
+                    LABEL_TYPE,
+                    LABEL_STATUS);
 
             connection = ConnectionPool.getInstance().getConnection();
 
@@ -84,6 +89,7 @@ class MySQLRequestDAO implements RequestDAO{
             statement.setLong(2, request.getTrainId());
             statement.setDouble(3, request.getPrice());
             statement.setString(4, request.getType().toString());
+            statement.setLong(5, request.getStatus());
 
             statement.executeUpdate();
 
@@ -112,7 +118,8 @@ class MySQLRequestDAO implements RequestDAO{
                     LABEL_USER_ID,
                     LABEL_TRAIN_ID,
                     LABEL_PRICE,
-                    LABEL_TYPE);
+                    LABEL_TYPE,
+                    LABEL_STATUS);
 
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(createQuery);
@@ -121,8 +128,9 @@ class MySQLRequestDAO implements RequestDAO{
             statement.setLong(2, request.getTrainId());
             statement.setDouble(3, request.getPrice());
             statement.setString(4, request.getType().toString());
+            statement.setLong(5, request.getStatus());
 
-            statement.setLong(5, request.getId());
+            statement.setLong(6, request.getId());
 
             statement.executeUpdate();
 
@@ -159,6 +167,115 @@ class MySQLRequestDAO implements RequestDAO{
 
     }
 
+    @Override
+    public void deleteRequests(final List<Request> requests) throws InvalidDataBaseOperation {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try{
+            String createQuery = QueryDAOUtil.createUpdateQuery(TABLE_NAME, LABEL_ID,
+                    LABEL_USER_ID,
+                    LABEL_TRAIN_ID,
+                    LABEL_PRICE,
+                    LABEL_TYPE,
+                    LABEL_STATUS);
+
+            connection = ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            for(Request request: requests){
+                switch (request.getType()){
+                    case C: {
+                        Train train = MySQLTrainDAO.getInstance().findById(request.getTrainId());
+                        train.setCompartmentFree(train.getCompartmentFree() + 1);
+                        MySQLTrainDAO.getInstance().update(train);
+                        break;
+                    }
+                    case L: {
+                        Train train = MySQLTrainDAO.getInstance().findById(request.getTrainId());
+                        train.setDeluxeFree(train.getDeluxeFree() + 1);
+                        MySQLTrainDAO.getInstance().update(train);
+                        break;
+                    }
+                    case B: {
+                        Train train = MySQLTrainDAO.getInstance().findById(request.getTrainId());
+                        train.setBerthFree(train.getBerthFree() + 1);
+                        MySQLTrainDAO.getInstance().update(train);
+                        break;
+                    }
+                }
+                statement = connection.prepareStatement(createQuery);
+
+                statement.setLong(1, request.getUserId());
+                statement.setLong(2, request.getTrainId());
+                statement.setDouble(3, request.getPrice());
+                statement.setString(4, request.getType().toString());
+                if(findById(request.getId()).getStatus() == 1){
+                    throw new InvalidDataBaseOperation("Already canceled " + request.getId());
+                }
+                statement.setLong(5, 1);
+
+                statement.setLong(6, request.getId());
+
+                statement.executeUpdate();
+            }
+
+            connection.commit();
+        } catch (SQLException e){
+            try {
+                LOG.severe("something wrong with transaction");
+                connection.rollback();
+            } catch (SQLException e1) {
+                LOG.severe("something wrong with rollback");
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void approveRequests(final List<Request> requests) throws InvalidDataBaseOperation{
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try{
+            String createQuery = QueryDAOUtil.createUpdateQuery(TABLE_NAME, LABEL_ID,
+                    LABEL_USER_ID,
+                    LABEL_TRAIN_ID,
+                    LABEL_PRICE,
+                    LABEL_TYPE,
+                    LABEL_STATUS);
+
+            connection = ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            for(Request request: requests){
+                statement = connection.prepareStatement(createQuery);
+
+                statement.setLong(1, request.getUserId());
+                statement.setLong(2, request.getTrainId());
+                statement.setDouble(3, request.getPrice());
+                statement.setString(4, request.getType().toString());
+
+                if(findById(request.getId()).getStatus() == 2){
+                    throw new InvalidDataBaseOperation("Already approved " + request.getId());
+                }
+                statement.setLong(5, 2);
+
+                statement.setLong(6, request.getId());
+
+                statement.executeUpdate();
+            }
+
+            connection.commit();
+        } catch (SQLException e){
+            try {
+                LOG.severe("something wrong with transaction");
+                connection.rollback();
+            } catch (SQLException e1) {
+                LOG.severe("something wrong with rollback");
+                e1.printStackTrace();
+            }
+        }
+    }
+
     private List<Request> findByParameter(Long id, String parameterLabel){
         List<Request> result = new ArrayList<>();
         Connection connection = null;
@@ -185,6 +302,7 @@ class MySQLRequestDAO implements RequestDAO{
         return result;
     }
 
+
     private Request getRequest(ResultSet set) throws SQLException{
         Request request = new Request();
         request.setId(set.getLong(LABEL_ID));
@@ -192,6 +310,7 @@ class MySQLRequestDAO implements RequestDAO{
         request.setUserId(set.getLong(LABEL_USER_ID));
         request.setPrice(set.getDouble(LABEL_PRICE));
         request.setType(TypePlace.valueOf(set.getString(LABEL_TYPE)));
+        request.setStatus(set.getLong(LABEL_STATUS));
         return request;
     }
 

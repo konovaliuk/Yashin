@@ -24,4 +24,5 @@ public class Ticket {
     private Long max;
 
     private Double price;
+    private Long status;
 }

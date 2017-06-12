@@ -18,10 +18,10 @@ import static command.admin.CommandAdminUtil.TICKETS_ATTRIBUTE;
 import static command.admin.CommandAdminUtil.USERNAME_ATTRIBUTE;
 import static command.admin.CommandAdminUtil.USER_ATTRIBUTE;
 
-public class CancelTicketsCommand implements Command {
+public class ApproveCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page = null;
+        String page;
         User userNow = (User) request.getSession(false).getAttribute(USER_ATTRIBUTE);
         if (userNow == null || !userNow.isAdmin())
             return Configuration.getInstance().getConfig(Configuration.LOGIN);
@@ -29,13 +29,14 @@ public class CancelTicketsCommand implements Command {
         List<Ticket> result = new ArrayList<>();
         List<Ticket> tickets = RequestService.getInstance().findAllTickets();
         for (Ticket ticket : tickets) {
-            if (request.getParameter(ticket.getRequestId().toString()).equals("cancel"))
+            String parameter = request.getParameter(ticket.getRequestId().toString());
+            if (request.getParameter(ticket.getRequestId().toString()).equals("approve"))
                 result.add(ticket);
         }
 
         try {
-            RequestService.getInstance().cancelRequest(result);
-        } catch (InvalidDataBaseOperation e) {
+            RequestService.getInstance().approveRequest(result);
+        } catch (InvalidDataBaseOperation e){
             request.setAttribute("messageError", e.getMessage());
             return Configuration.getInstance().getConfig(Configuration.ERROR);
         }

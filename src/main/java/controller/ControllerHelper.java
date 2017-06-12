@@ -38,6 +38,7 @@ public class ControllerHelper {
         commands.put(bundle.getString("command.admin.users"), new UsersCommand());
         commands.put(bundle.getString("command.admin.cancel"), new CancelTicketsCommand());
         commands.put(bundle.getString("command.admin.cancelAll"), new CancelAllTicketsCommand());
+        commands.put(bundle.getString("command.admin.approve"), new ApproveCommand());
 
         commands.put(bundle.getString("command.en"), new SetENCommand());
         commands.put(bundle.getString("command.ukr"), new SetUKRCommand());

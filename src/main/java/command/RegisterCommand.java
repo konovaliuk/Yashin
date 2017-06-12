@@ -38,7 +38,11 @@ public class RegisterCommand implements Command {
                     .build();
 
             user = LoginService.getInstance().addUser(user);
-            page = Configuration.getInstance().getConfig(Configuration.LOGIN);
+            if(user.getId() == null)
+                page = Configuration.getInstance().getConfig(Configuration.REGISTER);
+            else
+                page =  Configuration.getInstance().getConfig(Configuration.LOGIN);
+
         } else {
             request.setAttribute("errorMessage", true);
             page = Configuration.getInstance().getConfig(Configuration.REGISTER);
